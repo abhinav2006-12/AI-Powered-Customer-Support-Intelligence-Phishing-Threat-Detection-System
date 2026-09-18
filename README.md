@@ -9,114 +9,144 @@
 </div>
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://ai-powered-customer-support-intelli.vercel.app/)
+[![Public Scam Checker](https://img.shields.io/badge/Public%20Portal-%2Fverify-8B5CF6?style=for-the-badge&logo=shield)](http://localhost:5173/verify)
 [![Database](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
 [![AI Engine](https://img.shields.io/badge/AI%20Engine-Google%20Gemini%202.5-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20%7C%20Vite%20%7C%20Tailwind-38B2AC?style=for-the-badge&logo=react)](https://vitejs.dev/)
 [![Backend](https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-339933?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 
-> **An enterprise-grade, full-stack intelligence platform that unifies AI-driven Customer Support Ticket Analysis with Automated Real-Time Cybersecurity Phishing Threat Detection & SOC Triage.**
+> **An enterprise-grade, full-stack intelligence platform that unifies AI-driven Customer Support Ticket Analysis with Automated Real-Time Cybersecurity Phishing Threat Detection, Public Consumer Scam Verification, and SOC Triage.**
 
 ---
 
 ## 📌 Table of Contents
 1. [System Overview & Value Proposition](#1-system-overview--value-proposition)
-2. [Key Features & Capabilities](#2-key-features--capabilities)
-3. [Live Demo & Login Credentials](#3-live-demo--login-credentials)
-4. [System Architecture & Tech Stack](#4-system-architecture--tech-stack)
-5. [Database Schema (Supabase PostgreSQL & SQLite)](#5-database-schema)
-6. [Cybersecurity & Phishing Detection Engine](#6-cybersecurity--phishing-detection-engine)
-7. [Customer Support NLP & Intelligence Engine](#7-customer-support-nlp--intelligence-engine)
-8. [AI Copilot Studio (Gemini Integration)](#8-ai-copilot-studio-gemini-integration)
-9. [REST API Documentation](#9-rest-api-documentation)
-10. [Local Development & Installation Guide](#10-local-development--installation-guide)
-11. [Supabase Cloud Setup & Data Migration](#11-supabase-cloud-setup--data-migration)
-12. [Vercel Deployment Guide](#12-vercel-deployment-guide)
-13. [Project Directory Structure](#13-project-directory-structure)
-14. [Demo Scenarios & Test Cases](#14-demo-scenarios--test-cases)
-15. [License & Acknowledgments](#15-license--acknowledgments)
+2. [Public Scam Verification Portal (`/verify`)](#2-public-scam-verification-portal-verify)
+3. [Enterprise SOC & Support Dashboard](#3-enterprise-soc--support-dashboard)
+4. [Live Demo & Login Credentials](#4-live-demo--login-credentials)
+5. [System Architecture & Tech Stack](#5-system-architecture--tech-stack)
+6. [Database Schema (Supabase PostgreSQL & SQLite)](#6-database-schema)
+7. [Cybersecurity & Phishing Detection Engine](#7-cybersecurity--phishing-detection-engine)
+8. [Customer Support NLP & Intelligence Engine](#8-customer-support-nlp--intelligence-engine)
+9. [AI Copilot Studio & Public Scam Advisor](#9-ai-copilot-studio--public-scam-advisor)
+10. [Complete REST API Documentation](#10-complete-rest-api-documentation)
+11. [Local Development & Installation Guide](#11-local-development--installation-guide)
+12. [Supabase Cloud Setup & Data Migration](#12-supabase-cloud-setup--data-migration)
+13. [Vercel Deployment Guide](#13-vercel-deployment-guide)
+14. [Project Directory Structure](#14-project-directory-structure)
+15. [Demo Scenarios & Test Cases](#15-demo-scenarios--test-cases)
+16. [License & Acknowledgments](#16-license--acknowledgments)
 
 ---
 
 ## 1. System Overview & Value Proposition
 
 Enterprise customer support desks face tens of thousands of incoming customer inquiries, emails, chats, and contact forms every day. Among legitimate high-priority complaints (such as duplicate billing, delayed package deliveries, refund disputes, and account locked issues) lurk sophisticated **adversary campaigns**:
-- **Phishing attacks** impersonating trusted brands (PayPal, Microsoft, Netflix, Apple).
+- **Phishing attacks** impersonating trusted brands (PayPal, Microsoft, Netflix, Apple, Banks).
 - **Homoglyph & lookalike domain spoofing** (e.g. `paypa1-security.example`, `micros0ft-update.info`).
-- **Credential harvesting forms** designed to steal admin credentials.
-- **2FA/OTP exfiltration** and urgent coercion tactics.
+- **Credential harvesting forms** designed to steal credentials, CVV codes, and passwords.
+- **2FA/OTP exfiltration** and psychological urgency coercion tactics.
 
-**KAAVALX** solves both challenges simultaneously in a single, high-throughput pipeline:
-1. **Support Intelligence**: Decodes what the customer is asking, categorizes the issue, detects sentiment & emotional urgency, checks resolution status, and recommends agent workflows.
-2. **Cybersecurity Intelligence**: Extracts embedded links/emails, evaluates structural domain risk, flags social engineering techniques, calculates a deterministic **Risk Score (0–100)** with assigned **Risk Level (LOW / MEDIUM / HIGH / CRITICAL)**, and provides actionable **SOC Containment Recommendations**.
+**KAAVALX** solves both enterprise support challenges and consumer fraud defense simultaneously:
+1. **Public Scam Verification (`/verify`)**: A clean, accessible consumer portal allowing anyone to scan suspicious messages, SMS, website URLs, emails, or WhatsApp forwards without needing an account.
+2. **Customer Support Intelligence**: Decodes what the customer is asking, categorizes the issue, detects sentiment & emotional urgency, monitors SLA priority, and recommends automated agent response drafts.
+3. **Cybersecurity Intelligence**: Extracts embedded links/emails, checks lookalike typosquatting and unencrypted IP hosts, flags social engineering tactics, computes a deterministic **Risk Score (0–100)** with assigned **Risk Level (LOW / MEDIUM / HIGH / CRITICAL)**, and provides actionable **SOC Containment Recommendations**.
 
 ---
 
-## 2. Key Features & Capabilities
+## 2. Public Scam Verification Portal (`/verify`)
+
+The **Public Scam Checker** serves as the default public entrypoint (`/` redirects directly to `/verify`):
+
+### Key Capabilities:
+- 📱 **Multi-Mode Input Workbench**:
+  - **Message / SMS**: Scan raw SMS notifications, delivery updates, or customer texts.
+  - **Website URL / Link**: Dedicated URL scanner for domain typosquatting, raw IP hosting, and credential submission endpoints.
+  - **Email Body & Sender**: Multi-field input for `From: (Sender Email)`, `Subject Line`, and full `Email Body`.
+  - **WhatsApp / Chat**: Dedicated chat forward scanner for fake UPI claims, lottery traps, and KYC threats.
+- ⚡ **Compact Preset Scenario Chips**: One-click chips to load live test scenarios (`2FA & OTP Harvesting Trap`, `Fake Bank Typosquat Link`, `WhatsApp KYC Suspension Alert`, `Billing Refund Query`, `Amazon Order Delivery`).
+- 🎯 **Strong Visual Threat-Score Result Screen**:
+  - Prominent high-contrast threat verdict banner with status icons.
+  - Bold threat score gauge (`Score: 85/100 - CRITICAL RISK` vs `Score: 10/100 - SAFE`).
+  - Animated glowing progress bar matching severity.
+- 🧠 **"Why We Flagged This" AI Forensic Breakdown**:
+  - Itemized forensic breakdown displaying exact reasons why a message was flagged (e.g., *2FA/OTP Interception Demand (+35 pts)*, *Credential Harvesting (+30 pts)*, *Urgency Coercion (+20 pts)*, *Lookalike Typosquatting (+25 pts)*).
+  - Quick-indicator badges for Credential Theft, OTP Trap, Psychological Panic, and Typosquat URLs.
+- 🤖 **Public AI Scam Chat Advisor**:
+  - Interactive chatbot built into the page (and accessible via floating drawer) to answer user questions about online fraud, OTP rules, bank UPI safety, and emergency response steps.
+- 🛡️ **Safety Rules & Interactive FAQs**:
+  - 4 core rules to prevent fraud (OTP protection, URL inspection, urgency avoidance, UPI PIN receiving rules) plus expandable FAQ accordion.
+- 📋 **Share & Report Tools**: One-click clipboard copy for full incident reports and instant WhatsApp/SMS warning share links.
+
+---
+
+## 3. Enterprise SOC & Support Dashboard
+
+The internal analyst platform (`/dashboard`) provides end-to-end security incident response and support operations:
 
 - 🔐 **Role-Based Authentication**: Secure authentication gate with session persistence in local storage and rapid demo auto-fill credentials.
 - 🌓 **Dynamic Theme Switching (Dark & Light Mode)**: Full-featured dark/light theme toggle with high-contrast cybersecurity SOC aesthetics and persistent user preference.
-- 🤖 **KAAVALX AI Copilot Studio (Google Gemini 2.5 Flash)**:
-  - **Fullscreen AI Studio (`/assistant`)**: Tri-mode chat environment (SOC Threat Hunting, Customer Support Copilot, and Live Database Telemetry).
-  - **Global Floating Widget**: Draggable/accessible AI drawer across all application routes.
-- ⚡ **Dual-Database Architecture (Cloud + Local)**:
-  - **Cloud Database**: Direct read/write integration with **Supabase PostgreSQL**.
-  - **Local Database**: Zero-dependency fallback using **SQLite** (`better-sqlite3` in WAL mode).
-  - **Auto-Sync Utility**: CLI script (`npm run db:sync:supabase`) to replicate local telemetry to Supabase in one command.
 - 📊 **Executive & SOC Dashboard**:
   - Live KPI metrics (Total Conversations, Total Complaints, Critical Cases, Unresolved Backlog, Threats Detected).
   - Interactive charts powered by Recharts (Sentiment distributions, Category volume, Priority allocation, Threat vectors, 14-day velocity trends).
 - 🔍 **Deep Inspection & Triage**:
   - Filterable conversation logs with keyword search, priority sorting, sentiment filters, and risk tags.
   - Dedicated **Threat Intelligence** portal detailing lookalike domains, shortened URLs, and social engineering indicators.
-- 🧪 **Live Conversation Analyzer**:
+- 🧪 **Live Conversation Analyzer (`/analyze`)**:
   - Interactive workbench with pre-loaded attack payloads and customer complaint scenarios.
-  - Re-analyze live records dynamically to test heuristic and LLM scoring updates.
+  - Generates instant dual-intelligence breakdown: Customer Support NLP metrics and SOC Security Forensics.
+- 🤖 **Fullscreen AI Copilot Studio (`/assistant`)**:
+  - Tri-mode chat environment (SOC Threat Hunting, Customer Support Copilot, and Live Database Telemetry).
 
 ---
 
-## 3. Live Demo & Login Credentials
+## 4. Live Demo & Login Credentials
 
 | Attribute | Details |
 | :--- | :--- |
 | **Live Deployed App** | [https://ai-powered-customer-support-intelli.vercel.app/](https://ai-powered-customer-support-intelli.vercel.app/) |
+| **Public Scam Checker** | [https://ai-powered-customer-support-intelli.vercel.app/verify](https://ai-powered-customer-support-intelli.vercel.app/verify) |
 | **Default User** | `kavalx@kavalx.in` |
 | **Password** | *[Encrypted & Auto-filled directly on login]* |
 | **Role** | `SOC Incident Responder & Admin` |
 
-> *Tip: Click the **"Auto Fill"** button on the login screen to sign in instantly without typing credentials.*
+> *Tip: To access the internal dashboard, click **"SOC Portal"** on the `/verify` page, then click **"Auto Fill"** on the login screen to sign in instantly.*
 
 ---
 
-## 4. System Architecture & Tech Stack
+## 5. System Architecture & Tech Stack
 
 ```mermaid
 graph TD
-    User([End User / SOC Analyst]) -->|HTTPS| Frontend[React 18 + Vite SPA on Vercel]
-    Frontend --> AuthCtx[AuthContext / ThemeContext]
-    Frontend --> APILayer[API Service Adapter client/src/services/api.js]
+    User([Public User / Consumer]) -->|HTTPS| PublicPortal[Public Scam Checker /verify]
+    Analyst([SOC Analyst / Support Rep]) -->|HTTPS Auth| SOCDashboard[Enterprise Portal /dashboard]
     
-    APILayer -->|Cloud Direct Fallback| Supabase[(Supabase PostgreSQL Database)]
+    PublicPortal --> APILayer[API Service Adapter client/src/services/api.js]
+    SOCDashboard --> APILayer
+    
+    APILayer -->|Cloud Direct Fallback| Supabase[(Supabase PostgreSQL Cloud DB)]
     APILayer -->|REST API /api/*| Backend[Node.js Express Backend]
     
-    Backend --> SQLite[(Local SQLite Database app.db)]
+    Backend --> SQLite[(Local SQLite DB app.db)]
     Backend --> SupabaseDB[(Supabase PostgreSQL)]
     Backend --> GeminiAI[Google Gemini 2.5 Flash API]
     Backend --> SecEngine[Heuristic Security & Phishing Engine]
+    Backend --> NLPEngine[Support NLP Intelligence Engine]
 ```
 
 ### Technology Breakdown:
 - **Frontend**: React 18, Vite 6, Tailwind CSS 3, Recharts, Lucide Icons, React Router v6.
-- **Backend**: Node.js, Express.js, CORS, Dotenv.
+- **Backend**: Node.js, Express.js, CORS, Dotenv, Better-SQLite3.
 - **AI & LLM**: Google Gemini 2.5 Flash (`@google/genai`), Anthropic Claude 3.5 Sonnet (`@anthropic-ai/sdk`).
 - **Cloud Database**: Supabase PostgreSQL (`@supabase/supabase-js`).
 - **Local Database**: SQLite 3 (`better-sqlite3` in WAL mode).
-- **Deployment**: Vercel (Frontend SPA) + Render / Railway / Node server (Backend).
+- **Deployment**: Vercel (Frontend SPA) + Node server / Render / Railway (Backend).
 
 ---
 
-## 5. Database Schema
+## 6. Database Schema
 
-The database architecture is symmetrical across both **Supabase PostgreSQL** and **SQLite**:
+The database schema is fully mirrored across both **Supabase PostgreSQL** and **SQLite**:
 
 ### 1. `conversations` Table
 Stores raw communication records from email, live chat, or tickets.
@@ -127,7 +157,7 @@ Stores raw communication records from email, live chat, or tickets.
 | `customer_name` | TEXT | Customer or Sender name |
 | `customer_email` | TEXT | Customer or Sender email address |
 | `channel` | TEXT | `Email`, `Chat`, `Support Ticket`, `Contact Form`, `Social Media` |
-| `message` | TEXT | Body content of the customer message |
+| `message` | TEXT | Body content of the message |
 | `conversation_history`| TEXT | Thread history if applicable |
 | `status` | TEXT | `Open`, `In Progress`, `Resolved`, `Closed` |
 | `created_at` | TIMESTAMPTZ | Timestamp of receipt |
@@ -171,20 +201,20 @@ Stores parsed domains, hostnames, protocol analysis (`http` vs `https`), IP host
 
 ---
 
-## 6. Cybersecurity & Phishing Detection Engine
+## 7. Cybersecurity & Phishing Detection Engine
 
 KAAVALX uses a multi-layered detection matrix combining deterministic structural heuristics with AI:
 
 ### Risk Calculation Matrix:
 | Indicator | Heuristic Condition | Risk Weight |
 | :--- | :--- | :---: |
-| **Lookalike / Homoglyph Domain** | Pattern matching (e.g. `paypa1`, `micros0ft`, `amaz0n`, `netfl1x`) | **+35 pts** |
 | **Credential Harvesting** | Requests for `password`, `login`, `bank details`, `card number`, `PIN` | **+40 pts** |
 | **2FA / OTP Interception** | Demands for `OTP`, `verification code`, `authenticator code`, `security pin` | **+35 pts** |
-| **Urgency & Coercive Pressure** | `Within 24 hours`, `account suspended`, `legal action`, `immediate verification` | **+20 pts** |
+| **Lookalike / Homoglyph Domain** | Pattern matching (e.g. `paypa1`, `micros0ft`, `amaz0n`, `netfl1x`) | **+35 pts** |
 | **Unencrypted / Raw IP Host** | Protocol is `http://` or hostname is raw IPv4 address | **+25 pts** |
-| **URL Shortener Cloaking** | `bit.ly`, `tinyurl.com`, `t.co`, `cutt.ly`, `shorturl.at` | **+15 pts** |
 | **Domain Mismatch** | Sender domain does not match claimed brand signature | **+25 pts** |
+| **Urgency & Coercive Pressure** | `Within 24 hours`, `account suspended`, `legal action`, `immediate verification` | **+20 pts** |
+| **URL Shortener Cloaking** | `bit.ly`, `tinyurl.com`, `t.co`, `cutt.ly`, `shorturl.at` | **+15 pts** |
 
 ### Risk Level Classifications:
 - 🟢 **LOW (0–19 pts)**: Standard customer message with clean URLs and no coercion.
@@ -194,51 +224,55 @@ KAAVALX uses a multi-layered detection matrix combining deterministic structural
 
 ---
 
-## 7. Customer Support NLP & Intelligence Engine
+## 8. Customer Support NLP & Intelligence Engine
 
 The support intelligence module parses interactions into actionable business telemetry:
 - **Root Cause & Issue Extraction**: Automatically tags tickets (`Billing / Duplicate Charge`, `Hardware Failure`, `Delivery Delay`, etc.).
 - **Sentiment & Emotion Scoring**: Evaluates emotional polarity (`Positive`, `Neutral`, `Negative`) and psychological state (`Frustrated`, `Alarmed`, `Delighted`).
 - **Urgency vs. Priority Matrix**: Calibrates urgency from temporal deadlines and priority based on enterprise SLA impact.
+- **Resolution Status Tracking**: Identifies whether complaints are `Open`, `In Progress`, or `Resolved`.
 - **Automated Workflow Recommendations**: Generates tailored response templates and escalation recommendations for human agents.
 
 ---
 
-## 8. AI Copilot Studio (Gemini Integration)
+## 9. AI Copilot Studio & Public Scam Advisor
 
-KAAVALX incorporates **Google Gemini 2.5 Flash** for natural-language analysis:
+KAAVALX incorporates **Google Gemini 2.5 Flash** for deep conversational intelligence across four dedicated operational modes:
 
-1. 🛡️ **SOC Threat Analyst Mode**:
-   - Paste suspicious emails, raw headers, or URLs to receive immediate malware analysis, threat vector mapping, and remediation steps.
-2. 💬 **Support Agent Copilot Mode**:
+1. 🛡️ **Public Scam Advisor Mode (`/verify`)**:
+   - Dedicated consumer fraud advisor. Explains phishing risks in plain language, validates suspicious SMS/WhatsApp queries, and outlines emergency recovery steps if credentials were leaked.
+2. 🛡️ **SOC Threat Analyst Mode (`/assistant`)**:
+   - Paste suspicious emails, raw headers, or URLs to receive immediate malware analysis, threat vector mapping, and SOC remediation steps.
+3. 💬 **Support Agent Copilot Mode (`/assistant`)**:
    - Draft polite, policy-compliant responses to distressed customers, recommend refund workflows, and resolve disputes.
-3. 📊 **Ask Database Telemetry Mode**:
+4. 📊 **Ask Database Telemetry Mode (`/assistant`)**:
    - Query live Supabase / SQLite ticket metrics in plain English (e.g., *"How many critical threats were logged this week?"* or *"Show top billing issues"*).
 
 ---
 
-## 9. REST API Documentation
+## 10. Complete REST API Documentation
 
 ### Base URL: `/api`
 
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
+| `GET` | `/api/health` | System health check reporting Supabase, SQLite, and Gemini API statuses |
 | `GET` | `/api/dashboard` | Returns calculated KPI metrics, chart distributions, and recent threats |
 | `GET` | `/api/conversations` | Returns paginated conversations with filtering (`search`, `category`, `sentiment`, `risk_level`, `page`, `limit`) |
 | `GET` | `/api/conversations/:id` | Returns single conversation with full analysis, threat data, and parsed URLs |
 | `POST`| `/api/conversations` | Creates and automatically analyzes a new incoming customer conversation |
 | `DELETE`| `/api/conversations/:id` | Deletes a conversation and cascades associated threat/analysis records |
-| `POST`| `/api/analyze` | Evaluates a raw message on the fly without saving |
+| `POST`| `/api/analyze` | Evaluates a raw message / email / URL on the fly without saving (used by `/verify` & `/analyze`) |
 | `POST`| `/api/analyze/conversations/:id/analyze` | Re-evaluates an existing conversation with latest model heuristics |
 | `GET` | `/api/threats` | Retrieves all flagged security incidents with threat score breakdown |
 | `GET` | `/api/analytics` | Returns analytics data for specified time range (`today`, `7d`, `30d`, `all`) |
 | `POST`| `/api/demo/seed` | Seeds database with 60+ realistic support and phishing conversations |
-| `POST`| `/api/chat` | Queries Gemini AI Copilot with prompt, conversation mode, and history |
+| `POST`| `/api/chat` | Queries Gemini AI Copilot with prompt, conversation mode (`scam_advisor`, `soc`, `support`, `telemetry`), and history |
 | `GET` | `/api/chat/suggestions` | Retrieves contextual prompt suggestions for SOC and Support modes |
 
 ---
 
-## 10. Local Development & Installation Guide
+## 11. Local Development & Installation Guide
 
 ### Prerequisites:
 - **Node.js**: v18.0.0 or later ([Download](https://nodejs.org/))
@@ -280,6 +314,12 @@ SUPABASE_URL=your_supabase_project_url_here
 SUPABASE_KEY=your_supabase_anon_key_here
 ```
 
+Create `client/.env` (Optional: for direct cloud fallback):
+```env
+VITE_SUPABASE_URL=your_supabase_project_url_here
+VITE_SUPABASE_KEY=your_supabase_anon_key_here
+```
+
 ### Step 4: Run the Application
 
 **Terminal 1 (Backend Express Server):**
@@ -296,13 +336,13 @@ npm run dev
 ```
 *Frontend runs at `http://localhost:5173`.*
 
-Open your browser and visit **`http://localhost:5173`**.
+Open your browser and visit **`http://localhost:5173`** (Directly opens `/verify` Public Scam Checker).
 
 ---
 
-## 11. Supabase Cloud Setup & Data Migration
+## 12. Supabase Cloud Setup & Data Migration
 
-KAAVALX includes full support for Supabase PostgreSQL:
+KAAVALX includes full dual-sync support for Supabase PostgreSQL:
 
 1. **Create Tables in Supabase**:
    - Open your project in [Supabase Dashboard](https://supabase.com/dashboard).
@@ -314,11 +354,11 @@ KAAVALX includes full support for Supabase PostgreSQL:
      cd server
      npm run db:sync:supabase
      ```
-   - All 61+ conversations, analyses, threats, and URLs will be migrated to Supabase PostgreSQL.
+   - All conversations, analyses, threats, and URLs will be migrated to Supabase PostgreSQL.
 
 ---
 
-## 12. Vercel Deployment Guide
+## 13. Vercel Deployment Guide
 
 To deploy the frontend to Vercel:
 
@@ -333,7 +373,7 @@ To deploy the frontend to Vercel:
 
 ---
 
-## 13. Project Directory Structure
+## 14. Project Directory Structure
 
 ```
 AI-Powered Customer Support Intelligence & Phishing Threat Detection System/
@@ -341,12 +381,13 @@ AI-Powered Customer Support Intelligence & Phishing Threat Detection System/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── chat/
-│   │   │   │   └── FloatingChatWidget.jsx# Global floating AI Copilot drawer
+│   │   │   │   ├── FloatingChatWidget.jsx# Global floating AI Copilot drawer
+│   │   │   │   └── PublicScamChatAdvisor.jsx# Public consumer AI scam advisor
 │   │   │   ├── common/
 │   │   │   │   ├── Badge.jsx             # Priority, Sentiment & Risk Badges
 │   │   │   │   ├── LoadingSpinner.jsx    # Animated loading indicators
 │   │   │   │   ├── ProtectedRoute.jsx    # Auth route guard
-│   │   │   │   ├── RiskMeter.jsx         # 0-100 gauge component
+│   │   │   │   ├── RiskMeter.jsx         # 0-100 visual gauge component
 │   │   │   │   ├── StatCard.jsx          # KPI card component
 │   │   │   │   └── ThemeToggle.jsx       # Dark/Light theme button
 │   │   │   └── layout/
@@ -358,19 +399,20 @@ AI-Powered Customer Support Intelligence & Phishing Threat Detection System/
 │   │   │   └── ThemeContext.jsx          # Dark mode state manager
 │   │   ├── pages/
 │   │   │   ├── Analytics.jsx             # Business & security analytics
-│   │   │   ├── AnalyzeConversation.jsx   # Interactive test workbench
+│   │   │   ├── AnalyzeConversation.jsx   # Interactive analyst workbench
 │   │   │   ├── Assistant.jsx             # Fullscreen AI Studio (Gemini)
 │   │   │   ├── ConversationDetails.jsx   # Deep-dive ticket inspector
 │   │   │   ├── Conversations.jsx         # Paginated conversation table
 │   │   │   ├── Dashboard.jsx             # Overview dashboard
 │   │   │   ├── Dataset.jsx               # Dataset manager & seeder
 │   │   │   ├── Login.jsx                 # Authentication page
+│   │   │   ├── PublicScamChecker.jsx     # Public Scam Verification (/verify)
 │   │   │   ├── Settings.jsx              # System & database config
 │   │   │   └── ThreatIntelligence.jsx    # Dedicated SOC threat triage
 │   │   ├── services/
 │   │   │   ├── api.js                    # Dual-mode API adapter
 │   │   │   └── supabaseService.js        # Supabase direct cloud data layer
-│   │   ├── App.jsx                       # Route registry
+│   │   ├── App.jsx                       # Route registry (/verify default)
 │   │   ├── index.css                     # Custom styles & Tailwind directives
 │   │   └── main.jsx                      # App entry point
 │   ├── package.json
@@ -385,7 +427,7 @@ AI-Powered Customer Support Intelligence & Phishing Threat Detection System/
 │   ├── src/
 │   │   ├── controllers/                  # Route handlers
 │   │   │   ├── analytics.controller.js
-│   │   │   ├── analyze.controller.js
+│   │   │   ├── analysis.controller.js
 │   │   │   ├── chat.controller.js
 │   │   │   ├── conversations.controller.js
 │   │   │   ├── dashboard.controller.js
@@ -396,7 +438,8 @@ AI-Powered Customer Support Intelligence & Phishing Threat Detection System/
 │   │   │   └── supabase.js               # Supabase Node client
 │   │   ├── routes/                       # Express router definitions
 │   │   ├── scripts/
-│   │   │   └── migrate_to_supabase.js    # Data sync script
+│   │   │   ├── migrate_to_supabase.js    # Data sync script
+│   │   │   └── clear_all_data.js         # Database purge utility
 │   │   ├── services/
 │   │   │   ├── ai.service.js             # Claude & Heuristic NLP engine
 │   │   │   ├── gemini.service.js         # Google Gemini Flash assistant
@@ -414,32 +457,36 @@ AI-Powered Customer Support Intelligence & Phishing Threat Detection System/
 
 ---
 
-## 14. Demo Scenarios & Test Cases
+## 15. Demo Scenarios & Test Cases
 
-You can test the system using the built-in presets on the **Analyze Conversation** page:
+You can test the system using the built-in preset chips on the `/verify` page or `/analyze` workbench:
 
 ### Scenario 1: Critical Phishing Attack (Lookalike + OTP Theft)
 - **Input Text**:
   > *"URGENT! Your PayPal security notice: Unauthorized transaction of $450 detected. Verify your account immediately at http://paypa1-security.example/login and enter your 6-digit OTP code to avoid account suspension within 24 hours."*
 - **KAAVALX Output**:
   - **Risk Score**: `95/100` (CRITICAL)
-  - **Threat Flags**: Lookalike Domain (`paypa1-security.example`), Credential Harvesting, OTP Interception, High Urgency.
-  - **SOC Action**: *Block sender domain, quarantine user session, and issue credential reset warning.*
+  - **Why We Flagged This**:
+    - 🚨 *2FA / OTP Interception Demand (+35 Risk Pts)*
+    - 🚨 *Credential Harvesting Attempt (+30 Risk Pts)*
+    - 🚨 *Deceptive Lookalike Domain `paypa1-security.example` (+25 Risk Pts)*
+    - ⚠️ *Urgency & Coercive Pressure (+20 Risk Pts)*
+  - **SOC Action**: *Block sender domain, quarantine user session, flag URL in firewall, and issue credential reset warning.*
 
 ### Scenario 2: Legitimate High-Priority Customer Complaint
 - **Input Text**:
-  > *"My credit card was charged $120 twice for invoice #INV-98214 on September 15. Please refund the duplicate payment immediately as this was an automated billing error."*
+  > *"My payment was deducted twice for the annual subscription (₹2,500). The transaction ID is TXN-99821 but my order wasn't confirmed. Please help me get my refund as soon as possible."*
 - **KAAVALX Output**:
   - **Risk Score**: `0/100` (CLEAN / LOW)
   - **Category**: `Billing & Payments`
   - **Sentiment**: `Negative` (Dissatisfied)
   - **Priority**: `High`
   - **Resolution**: `Unresolved`
-  - **Agent Action**: *Verify transaction ID in payment gateway and issue immediate duplicate charge refund.*
+  - **Support Agent Action**: *Verify transaction ID in payment gateway and issue immediate duplicate charge refund.*
 
 ---
 
-## 15. License & Acknowledgments
+## 16. License & Acknowledgments
 
 - **Development**: Engineered and developed with pride by **APEX**.
 - **License**: MIT Open Source License.
