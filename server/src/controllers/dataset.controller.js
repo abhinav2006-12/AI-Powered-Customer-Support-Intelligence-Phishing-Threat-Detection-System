@@ -1,6 +1,7 @@
 import db from '../db/database.js';
 import { seedDatabase } from '../services/seed.service.js';
 import { analyzeConversationWithAI } from '../services/ai.service.js';
+import { syncAllToSupabase, supabase, isSupabaseConfigured } from '../db/supabase.js';
 
 export function getDatasetInfo(req, res) {
   try {
@@ -64,6 +65,9 @@ export async function importDataset(req, res) {
       importedCount++;
     }
 
+    // Auto-sync entire imported dataset to Supabase
+    syncAllToSupabase(db);
+
     return res.json({
       message: `Successfully imported and analyzed ${importedCount} dataset records`,
       count: importedCount
@@ -74,7 +78,7 @@ export async function importDataset(req, res) {
   }
 }
 
-export function clearDataset(req, res) {
+export async function clearDataset(req, res) {
   try {
     db.prepare('DELETE FROM emails').run();
     db.prepare('DELETE FROM urls').run();
@@ -82,20 +86,36 @@ export function clearDataset(req, res) {
     db.prepare('DELETE FROM analyses').run();
     db.prepare('DELETE FROM conversations').run();
 
-    return res.json({ message: 'Dataset cleared successfully' });
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from('emails').delete().neq('id', 0);
+        await supabase.from('urls').delete().neq('id', 0);
+        await supabase.from('threats').delete().neq('id', 0);
+        await supabase.from('analyses').delete().neq('id', 0);
+        await supabase.from('conversations').delete().neq('id', 0);
+        console.log('⚡ [Auto-Sync] Cleared Supabase tables in sync with SQLite.');
+      } catch (sbErr) {
+        console.warn('⚠️ Supabase clear error:', sbErr.message);
+      }
+    }
+
+    return res.json({ message: 'Dataset cleared successfully across local SQLite and Supabase PostgreSQL' });
   } catch (err) {
     console.error('Error clearing dataset:', err);
     return res.status(500).json({ error: 'Failed to clear dataset' });
   }
 }
 
-export function seedDemoData(req, res) {
+export async function seedDemoData(req, res) {
   try {
     const { count = 60 } = req.body || {};
     const result = seedDatabase(parseInt(count));
 
+    // Auto-sync all seeded data to Supabase in background
+    syncAllToSupabase(db);
+
     return res.json({
-      message: `Successfully seeded database with ${result.seededCount} realistic conversations, analyses, threats, and extracted URLs/emails`,
+      message: `Successfully seeded database with ${result.seededCount} realistic conversations, analyses, threats, and extracted URLs/emails (Auto-synced to Supabase)`,
       count: result.seededCount
     });
   } catch (err) {

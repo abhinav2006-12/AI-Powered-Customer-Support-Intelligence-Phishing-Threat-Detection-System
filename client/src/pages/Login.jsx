@@ -188,8 +188,24 @@ export function Login() {
               </button>
             </form>
 
+            {/* Public Scam Checker Link for non-logged-in users */}
+            <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 text-center">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+                Received a suspicious message or phishing link?
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/verify')}
+                className="w-full py-2 px-3 rounded-xl border border-purple-200 dark:border-purple-800/60 bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 text-xs font-bold transition-all flex items-center justify-center space-x-2 cursor-pointer"
+              >
+                <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                <span>Open Free Scam & Phishing Checker</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
             {/* Security Footnote */}
-            <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-center space-x-1.5 text-[11px] text-slate-400 dark:text-slate-500">
+            <div className="mt-4 pt-3 flex items-center justify-center space-x-1.5 text-[11px] text-slate-400 dark:text-slate-500">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
               <span>Encrypted & Protected Access</span>
             </div>

@@ -28,6 +28,7 @@ export function Sidebar() {
     { label: 'Dashboard', path: '/', icon: LayoutDashboard },
     { label: 'KAAVALX AI Copilot', path: '/assistant', icon: Bot },
     { label: 'Analyze Conversation', path: '/analyze', icon: Sparkles },
+    { label: 'Public Scam Checker', path: '/verify', icon: ShieldCheck },
     { label: 'Conversations', path: '/conversations', icon: MessageSquare },
     { label: 'Threat Intelligence', path: '/threats', icon: ShieldAlert },
     { label: 'Analytics', path: '/analytics', icon: BarChart3 },

@@ -39,6 +39,22 @@ try {
   }
 }
 
+if (dbInstance && !dbInstance.transaction) {
+  dbInstance.transaction = function(fn) {
+    return function(...args) {
+      dbInstance.exec('BEGIN');
+      try {
+        const result = fn(...args);
+        dbInstance.exec('COMMIT');
+        return result;
+      } catch (err) {
+        try { dbInstance.exec('ROLLBACK'); } catch (e) {}
+        throw err;
+      }
+    };
+  };
+}
+
 const db = dbInstance;
 
 // Enable Foreign Keys & Write-Ahead Logging for concurrency

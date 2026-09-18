@@ -1,5 +1,6 @@
 import db from '../db/database.js';
 import { analyzeConversationWithAI } from '../services/ai.service.js';
+import { syncRecordToSupabase } from '../db/supabase.js';
 
 export async function analyzeNewConversation(req, res) {
   try {
@@ -101,6 +102,53 @@ export async function analyzeNewConversation(req, res) {
           emailStmt.run(convId, e.email, e.domain, e.display_name, e.domain_mismatch, e.lookalike, e.free_mail, e.risk_score, e.risk_reason, dateStr);
         });
       }
+      // Auto-sync the newly saved record to Supabase
+      syncRecordToSupabase({
+        conversation: {
+          id: convId,
+          external_id: extId,
+          customer_name,
+          customer_email,
+          channel,
+          message,
+          conversation_history,
+          status: 'Open',
+          created_at: dateStr,
+          updated_at: dateStr
+        },
+        analysis: {
+          conversation_id: convId,
+          category: aiResult.category,
+          issue: aiResult.issue,
+          sentiment: aiResult.sentiment,
+          emotion: aiResult.emotion,
+          urgency: aiResult.urgency,
+          priority: aiResult.priority,
+          customer_request: aiResult.customer_request,
+          summary: aiResult.summary,
+          resolution_status: aiResult.resolution_status,
+          recommended_action: aiResult.recommended_action,
+          confidence: 0.96,
+          keywords: JSON.stringify(aiResult.keywords || []),
+          entities: JSON.stringify(aiResult.entities || []),
+          created_at: dateStr
+        },
+        threat: {
+          conversation_id: convId,
+          threat_detected: sec.threat_detected ? 1 : 0,
+          threat_type: sec.threat_type || 'None',
+          risk_level: sec.risk_level || 'LOW',
+          risk_score: sec.risk_score || 0,
+          social_engineering: sec.social_engineering ? 1 : 0,
+          social_engineering_techniques: JSON.stringify(sec.techniques || []),
+          credential_request: sec.credential_request ? 1 : 0,
+          otp_request: sec.otp_request ? 1 : 0,
+          suspicious_message: sec.suspicious_message ? 1 : 0,
+          reason: sec.reason || '',
+          recommended_action: aiResult.recommended_action,
+          created_at: dateStr
+        }
+      });
     }
 
     return res.json({

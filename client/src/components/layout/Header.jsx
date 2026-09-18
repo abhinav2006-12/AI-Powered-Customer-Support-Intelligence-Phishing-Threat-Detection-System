@@ -10,6 +10,7 @@ export function Header({ title = 'Dashboard', onSeedSuccess }) {
   const [seeding, setSeeding] = useState(false);
   const [notification, setNotification] = useState('');
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleSync = async () => {
     try {
