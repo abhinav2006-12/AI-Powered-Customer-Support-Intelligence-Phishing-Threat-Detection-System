@@ -122,13 +122,15 @@ function analyzeWithHeuristics(message, conversationHistory, customerEmail, cust
     security: {
       threat_detected: Boolean(sec.threat_detected),
       threat_type: sec.threat_type,
+      risk_level: sec.risk_level,
+      risk_score: sec.risk_score !== undefined ? sec.risk_score : (sec.risk_level === 'CRITICAL' ? 88 : (sec.threat_detected ? 65 : 10)),
       social_engineering: Boolean(sec.social_engineering),
       techniques: JSON.parse(sec.social_engineering_techniques || '[]'),
       credential_request: Boolean(sec.credential_request),
       otp_request: Boolean(sec.otp_request),
       suspicious_message: Boolean(sec.suspicious_message),
-      risk_level: sec.risk_level,
-      reason: sec.reason
+      reason: sec.reason,
+      recommended_action: sec.recommended_action
     },
     urls,
     emails

@@ -2,8 +2,9 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeToggle } from '../components/common/ThemeToggle';
 import { PublicScamChatAdvisor } from '../components/chat/PublicScamChatAdvisor';
-import { analyzeSecurity } from '../services/supabaseService';
 import { analyzeConversation } from '../services/api';
+import { RiskBadge, PriorityBadge, SentimentBadge } from '../components/common/Badge';
+import { RiskMeter } from '../components/common/RiskMeter';
 import { 
   ShieldAlert, 
   ShieldCheck, 
@@ -133,7 +134,7 @@ export function PublicScamChecker() {
   const [inputText, setInputText] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [verdict, setVerdict] = useState(null);
+  const [rawAnalysis, setRawAnalysis] = useState(null);
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(0);
@@ -169,137 +170,26 @@ export function PublicScamChecker() {
     }
 
     setLoading(true);
-    setVerdict(null);
+    setRawAnalysis(null);
 
     try {
-      const sec = analyzeSecurity(text, sender);
-      const lower = text.toLowerCase();
-      const redFlags = [];
-
-      const lookalikeMatches = [
-        /paypa1/i, /micros0ft/i, /g00gle/i, /amaz0n/i, /netfl1x/i, /app1e/i, /faceb00k/i,
-        /.*-security\.example/i, /.*-verify\.com/i, /.*-update\.info/i, /.*-support\.org/i,
-        /.*-alert24\./i, /.*-portal\.net/i
-      ];
-      const hasLookalike = lookalikeMatches.some(p => p.test(text));
-
-      // 1. Password & credential theft
-      if (/password|login detail|credential|bank details|card number|cvv|security pin|atm pin|secret pin/i.test(lower)) {
-        redFlags.push({
-          icon: Lock,
-          title: 'Password & Card Details Harvesting Trap',
-          desc: 'This message explicitly requests your confidential login password or card PIN/CVV. Genuine companies never request credentials via chat or email.',
-          severity: 'CRITICAL'
-        });
-      }
-
-      // 2. OTP Exfiltration
-      if (/otp|verification code|one-time password|2fa code|security code|verification pin|passcode/i.test(lower)) {
-        redFlags.push({
-          icon: Key,
-          title: 'One-Time Passcode (OTP) Stealing Attempt',
-          desc: 'The sender wants your 6-digit OTP to bypass two-factor protection and hijack your account or siphon funds.',
-          severity: 'CRITICAL'
-        });
-      }
-
-      // 3. Panic & Urgency
-      if (/urgent|immediately|within 24 hours|within 2 hours|account suspended|deactivated|action required|final notice|blocked|permanently locked/i.test(lower)) {
-        redFlags.push({
-          icon: Clock,
-          title: 'Coercive Urgency & Threat Tactics',
-          desc: 'The message attempts to create sudden panic ("Account locked in 2 hours!") so you act quickly before verifying.',
-          severity: 'HIGH'
-        });
-      }
-
-      // 4. Financial Baits & Fake Refunds
-      if (/refund approved|lottery|prize winner|wire transfer|crypto deposit|gift card|unclaimed funds|cash prize|claim your funds/i.test(lower)) {
-        redFlags.push({
-          icon: CreditCard,
-          title: 'Fake Refund / Prize Money Bait',
-          desc: 'Promises of unearned cash or unexpected refunds designed to lure you into sharing banking credentials.',
-          severity: 'HIGH'
-        });
-      }
-
-      // 5. Deceptive Links
-      const urlsFound = (text.match(/https?:\/\/[^\s]+/gi) || []).map(u => {
-        const isLookalikeUrl = lookalikeMatches.some(p => p.test(u));
-        const isShort = /bit\.ly|tinyurl|t\.co|goo\.gl|is\.gd|cutt\.ly|ow\.ly/i.test(u);
-        const isHttp = u.startsWith('http://');
-        return {
-          url: u,
-          isSuspicious: isLookalikeUrl || isShort || isHttp,
-          reason: isLookalikeUrl 
-            ? 'Deceptive lookalike domain (spoofing trusted brand)' 
-            : isShort 
-            ? 'Hidden / shortened redirect link' 
-            : isHttp 
-            ? 'Unencrypted plain HTTP connection' 
-            : 'Standard domain'
-        };
+      // Direct unified backend analysis call (same as Analyze Conversation)
+      const res = await analyzeConversation({
+        message: text,
+        customer_name: 'Public Verification User',
+        customer_email: sender || 'anonymous@verify.local',
+        channel: 'Web Verification Scanner',
+        save: true
       });
 
-      if (urlsFound.some(u => u.isSuspicious) || hasLookalike) {
-        redFlags.push({
-          icon: Globe,
-          title: 'Suspicious / Deceptive Web Link',
-          desc: 'Contains links pointing to unverified, shortened, or fake lookalike web domains.',
-          severity: 'HIGH'
+      if (res && res.analysis) {
+        setRawAnalysis({
+          ...res.analysis,
+          urls: res.analysis.urls || [],
+          emails: res.analysis.emails || [],
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
       }
-
-      // 6. Free-Mail Address Spoof
-      if (sender && /gmail\.com|yahoo\.com|outlook\.com|hotmail\.com/i.test(sender) && /bank|security|paypal|microsoft|support|desk|refund|alert|amazon/i.test(sender)) {
-        redFlags.push({
-          icon: Mail,
-          title: 'Free Webmail Sender Impersonation',
-          desc: 'The sender claims to represent a major enterprise or bank, but sent the message from a personal free email provider.',
-          severity: 'HIGH'
-        });
-      }
-
-      // Compute score
-      let riskScore = sec.risk_score || 0;
-      if (redFlags.length >= 3) riskScore = Math.max(riskScore, 95);
-      else if (redFlags.length === 2) riskScore = Math.max(riskScore, 75);
-      else if (redFlags.length === 1) riskScore = Math.max(riskScore, 55);
-
-      const isScamThreat = riskScore >= 50 || redFlags.length >= 1 || sec.threat_detected === 1;
-      const riskLevel = riskScore >= 75 ? 'CRITICAL' : riskScore >= 45 ? 'HIGH' : riskScore >= 20 ? 'MEDIUM' : 'SAFE';
-
-      // Backend API sync
-      try {
-        const apiRes = await analyzeConversation({
-          message: text,
-          customer_email: sender,
-          channel: 'Email'
-        });
-        if (apiRes?.analysis?.security) {
-          const apiSec = apiRes.analysis.security;
-          if (apiSec.risk_score > riskScore) {
-            riskScore = apiSec.risk_score;
-          }
-        }
-      } catch {
-        // Fallback works deterministically
-      }
-
-      const finalVerdict = {
-        threat_detected: isScamThreat ? 1 : 0,
-        threat_type: isScamThreat 
-          ? (hasLookalike ? 'Lookalike Brand Impersonation' : redFlags.some(f => f.title.includes('OTP')) ? 'OTP Harvesting Scam' : 'Credential Harvesting & Phishing')
-          : 'Clean & Legitimate Interaction',
-        risk_level: isScamThreat ? riskLevel : 'SAFE',
-        risk_score: isScamThreat ? Math.max(riskScore, 65) : 0,
-        redFlags,
-        urls: urlsFound,
-        sender: sender || 'Unspecified Sender',
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-
-      setVerdict(finalVerdict);
 
       // Auto scroll smoothly to verdict
       setTimeout(() => {
@@ -310,7 +200,7 @@ export function PublicScamChecker() {
 
     } catch (err) {
       console.error('Scan error:', err);
-      alert('Scanning failed. Please try again.');
+      alert('Scanning failed. Please check your backend connection.');
     } finally {
       setLoading(false);
     }
@@ -326,27 +216,24 @@ export function PublicScamChecker() {
   const handleClear = () => {
     setInputText('');
     setSenderEmail('');
-    setVerdict(null);
+    setRawAnalysis(null);
     textareaRef.current?.focus();
   };
 
   const handleCopyReport = () => {
-    if (!verdict) return;
-    const isDangerous = verdict.threat_detected === 1 || verdict.risk_score >= 50;
+    if (!rawAnalysis) return;
+    const sec = rawAnalysis.security || {};
+    const isDangerous = sec.threat_detected || (sec.risk_score >= 50);
     const report = [
       `🚨 KAAVALX Security Scam Assessment`,
       `----------------------------------------`,
       `Status: ${isDangerous ? '🛑 DANGEROUS SCAM DETECTED' : '✅ LOOKS SAFE'}`,
-      `Risk Level: ${verdict.risk_level} (Threat Score: ${verdict.risk_score}/100)`,
-      `Detected Type: ${verdict.threat_type}`,
-      `Red Flags Found: ${verdict.redFlags.length}`,
+      `Risk Level: ${sec.risk_level} (Threat Score: ${sec.risk_score || 0}/100)`,
+      `Detected Type: ${sec.threat_type || 'None'}`,
+      `Category: ${rawAnalysis.category || 'General'}`,
+      `Recommended Action: ${sec.recommended_action || rawAnalysis.recommended_action || 'Standard verification.'}`,
       ``,
-      `Safety Advice:`,
-      isDangerous 
-        ? `• Do NOT click any links in this message.\n• NEVER share OTP codes or passwords.\n• Block and report this sender.`
-        : `• Message appears legitimate, but always double-check official domain names before entering sensitive passwords.`,
-      ``,
-      `Verified via KAAVALX Free Cyber Defense: http://localhost:5173/verify`
+      `Verified with KAAVALX Cyber Defense Backend Engine: http://localhost:5173/verify`
     ].join('\n');
 
     navigator.clipboard.writeText(report);
@@ -355,8 +242,9 @@ export function PublicScamChecker() {
   };
 
   const handleShareWarning = () => {
-    if (!verdict) return;
-    const shareText = `⚠️ Warning: I just checked a suspicious message on KAAVALX and it was flagged as a ${verdict.risk_level} risk scam! Never share OTPs or passwords. Check any suspicious messages at http://localhost:5173/verify`;
+    if (!rawAnalysis) return;
+    const sec = rawAnalysis.security || {};
+    const shareText = `⚠️ Warning: I just checked a suspicious message on KAAVALX and it was flagged as a ${sec.risk_level || 'HIGH'} risk threat (${sec.threat_type || 'Scam'})! Never share OTPs or passwords. Check any suspicious messages at http://localhost:5173/verify`;
     if (navigator.share) {
       navigator.share({
         title: 'KAAVALX Scam Alert',
@@ -370,8 +258,9 @@ export function PublicScamChecker() {
     }
   };
 
-  const isScam = verdict && (verdict.threat_detected === 1 || verdict.risk_score >= 50);
-  const isSuspicious = verdict && !isScam && (verdict.risk_level === 'MEDIUM' || verdict.risk_score > 0);
+  const sec = rawAnalysis?.security || {};
+  const isScam = rawAnalysis && (sec.threat_detected || (sec.risk_score >= 50) || sec.risk_level === 'CRITICAL' || sec.risk_level === 'HIGH');
+  const isSuspicious = rawAnalysis && !isScam && (sec.risk_level === 'MEDIUM' || (sec.risk_score > 0));
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#070B18] text-slate-800 dark:text-slate-100 relative font-sans antialiased transition-colors duration-200 selection:bg-purple-500 selection:text-white pb-16">
@@ -449,7 +338,7 @@ export function PublicScamChecker() {
         <div className="text-center space-y-3">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50 shadow-xs">
             <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-            <span>Real-Time Fraud Verification • 100% Free & Confidential</span>
+            <span>Powered by Backend Threat Intelligence Engine</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
@@ -585,7 +474,7 @@ export function PublicScamChecker() {
                     {loading ? (
                       <>
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        <span>Scanning Security...</span>
+                        <span>Scanning via AI Engine...</span>
                       </>
                     ) : (
                       <>
@@ -629,12 +518,12 @@ export function PublicScamChecker() {
 
             </div>
 
-            {/* Verdict Card Section */}
+            {/* Verdict Card Section (Powered by Backend Analysis) */}
             <div ref={resultRef}>
-              {verdict && (
+              {rawAnalysis && (
                 <div className="space-y-6 animate-fade-in">
                   
-                  {/* Main Banner */}
+                  {/* Main Banner Alert */}
                   <div className={`p-6 sm:p-8 rounded-3xl border shadow-xl relative overflow-hidden transition-all ${
                     isScam 
                       ? 'bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-500/40 text-rose-900 dark:text-rose-100 shadow-rose-500/5' 
@@ -654,19 +543,19 @@ export function PublicScamChecker() {
                         <div>
                           <div className="flex items-center space-x-2">
                             <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/70 dark:bg-white/10 border border-current/20">
-                              Analysis Verdict
+                              Backend AI Verification
                             </span>
-                            <span className="text-xs font-mono opacity-70">{verdict.timestamp}</span>
+                            <span className="text-xs font-mono opacity-70">{rawAnalysis.timestamp}</span>
                           </div>
                           <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-1">
-                            {isScam ? '🛑 Dangerous Scam / Phishing Attack Detected' : isSuspicious ? '⚠️ Suspicious Elements Detected' : '✅ Authentic & Safe Message'}
-                          </h2>
-                          <p className="text-xs sm:text-sm font-medium opacity-90 mt-1">
                             {isScam 
-                              ? 'Do NOT click any links, do NOT enter passwords, and do NOT share your OTP code.'
+                              ? `🛑 Threat Detected: ${sec.threat_type || 'Phishing / Scam'}` 
                               : isSuspicious 
-                              ? 'Proceed with caution. The message has unverified elements; verify with the official service.'
-                              : 'No deceptive links, OTP traps, or credential theft attempts were found in this text.'}
+                              ? '⚠️ Suspicious Incident Detected' 
+                              : '✅ Safe & Authentic Message'}
+                          </h2>
+                          <p className="text-xs sm:text-sm font-medium opacity-90 mt-1 leading-relaxed">
+                            {sec.reason || rawAnalysis.summary || 'No suspicious threats or deceptive links were detected.'}
                           </p>
                         </div>
                       </div>
@@ -674,135 +563,155 @@ export function PublicScamChecker() {
                       {/* Threat Badge */}
                       <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-current/10">
                         <span className="text-xs font-semibold uppercase opacity-70">Risk Level:</span>
-                        <span className={`text-xs font-black px-3 py-1.5 rounded-xl border mt-1 ${
-                          isScam 
-                            ? 'bg-rose-100 text-rose-800 dark:bg-rose-500/20 dark:text-rose-200 border-rose-300 dark:border-rose-500/40' 
-                            : isSuspicious 
-                            ? 'bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-200 border-amber-300 dark:border-amber-500/40' 
-                            : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-200 border-emerald-300 dark:border-emerald-500/40'
-                        }`}>
-                          {verdict.risk_level} ({verdict.risk_score}/100)
-                        </span>
+                        <div className="mt-1">
+                          <RiskBadge level={sec.risk_level || (isScam ? 'HIGH' : 'LOW')} />
+                        </div>
                       </div>
                     </div>
 
-                    {/* Score Meter */}
+                    {/* Threat Score Progress Meter */}
                     <div className="mt-5 pt-4 border-t border-current/10">
                       <div className="flex justify-between text-xs font-semibold mb-1.5 opacity-90">
-                        <span>Threat Probability Meter</span>
-                        <span>{verdict.risk_score >= 50 ? 'High Danger Level' : 'Safe to Proceed'}</span>
+                        <span>Threat Risk Probability</span>
+                        <span>Score: {sec.risk_score || (isScam ? 85 : 10)} / 100 ({sec.risk_level || 'LOW'})</span>
                       </div>
                       <div className="w-full h-2.5 rounded-full bg-slate-200 dark:bg-black/40 overflow-hidden">
                         <div 
                           className={`h-full transition-all duration-500 rounded-full ${
                             isScam ? 'bg-gradient-to-r from-rose-500 to-red-600' : isSuspicious ? 'bg-gradient-to-r from-amber-400 to-amber-600' : 'bg-gradient-to-r from-emerald-400 to-emerald-600'
                           }`}
-                          style={{ width: `${Math.max(verdict.risk_score, 5)}%` }}
+                          style={{ width: `${Math.max(sec.risk_score || (isScam ? 85 : 10), 8)}%` }}
                         />
                       </div>
                     </div>
 
                   </div>
 
-                  {/* Red Flags & Action Steps Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Split Grid: Security Threat Intelligence & Message Context */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     
-                    {/* Left: Identified Red Flags */}
+                    {/* Left: Security Threat Intelligence */}
                     <div className="bg-white dark:bg-[#0E152C] p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center space-x-2">
-                          <AlertCircle className="w-4 h-4 text-rose-500" />
-                          <span>Identified Red Flags ({verdict.redFlags.length})</span>
-                        </h3>
-                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                          Type: <strong className="text-slate-700 dark:text-slate-200">{verdict.threat_type}</strong>
-                        </span>
+                      <h3 className="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-2">
+                        <ShieldAlert className="w-4 h-4" />
+                        <span>Security Threat Intelligence</span>
+                      </h3>
+
+                      <div className="grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400 font-medium">Threat Detected:</span>
+                          <p className={`font-semibold ${sec.threat_detected ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                            {sec.threat_detected ? 'YES' : 'NO'}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400 font-medium">Threat Type:</span>
+                          <p className="font-semibold text-slate-900 dark:text-white">{sec.threat_type || 'None'}</p>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400 font-medium">Credential Theft:</span>
+                          <p className={`font-semibold ${sec.credential_request ? 'text-rose-600 dark:text-rose-400' : 'text-slate-700 dark:text-slate-300'}`}>
+                            {sec.credential_request ? 'Yes (Password/PIN requested)' : 'No'}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400 font-medium">OTP / 2FA Interception:</span>
+                          <p className={`font-semibold ${sec.otp_request ? 'text-rose-600 dark:text-rose-400' : 'text-slate-700 dark:text-slate-300'}`}>
+                            {sec.otp_request ? 'Yes (OTP requested)' : 'No'}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400 font-medium">Social Engineering:</span>
+                          <p className="font-semibold text-slate-900 dark:text-white">{sec.social_engineering ? 'Detected' : 'None'}</p>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 dark:text-slate-400 font-medium">Coercive Language:</span>
+                          <p className="font-semibold text-slate-900 dark:text-white">{sec.suspicious_message ? 'Urgency / Fear tactics' : 'Normal tone'}</p>
+                        </div>
                       </div>
 
-                      {verdict.redFlags && verdict.redFlags.length > 0 ? (
-                        <div className="space-y-3">
-                          {verdict.redFlags.map((flag, idx) => {
-                            const IconComp = flag.icon || AlertCircle;
-                            return (
-                              <div key={idx} className="p-3.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-500/30 space-y-1">
-                                <div className="flex items-center space-x-2 text-rose-800 dark:text-rose-300 font-bold text-xs">
-                                  <IconComp className="w-4 h-4 flex-shrink-0" />
-                                  <span>{flag.title}</span>
-                                </div>
-                                <p className="text-[11px] text-rose-700 dark:text-rose-200/80 leading-relaxed pl-6">
-                                  {flag.desc}
-                                </p>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/30 text-xs text-emerald-800 dark:text-emerald-300 flex items-center space-x-2.5">
-                          <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-600" />
-                          <span>No deceptive phishing patterns or credential traps identified.</span>
+                      {/* Detected Techniques Pills */}
+                      {sec.techniques && sec.techniques.length > 0 && (
+                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Detected Attack Techniques:</span>
+                          <div className="flex flex-wrap gap-1.5 mt-1.5">
+                            {sec.techniques.map((tech, i) => (
+                              <span key={i} className="px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 rounded-lg text-[11px] font-semibold">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       )}
 
-                      {/* Detected Links List */}
-                      {verdict.urls && verdict.urls.length > 0 && (
-                        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                          <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
-                            Extracted Web Links:
+                      {/* Extracted URLs List */}
+                      {rawAnalysis.urls && rawAnalysis.urls.length > 0 && (
+                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
+                            Analyzed Web Links ({rawAnalysis.urls.length}):
                           </span>
-                          {verdict.urls.map((u, idx) => (
-                            <div key={idx} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs flex items-center justify-between">
-                              <span className="font-mono text-[11px] text-slate-700 dark:text-slate-300 truncate max-w-[200px]">
-                                {u.url}
-                              </span>
-                              <span className={`text-[9px] px-2 py-0.5 rounded font-bold uppercase border ${
-                                u.isSuspicious 
-                                  ? 'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-300 border-rose-200 dark:border-rose-500/30' 
-                                  : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 border-emerald-200 dark:border-emerald-500/30'
-                              }`}>
-                                {u.isSuspicious ? 'UNSAFE LINK' : 'CLEAN'}
-                              </span>
-                            </div>
-                          ))}
+                          <div className="space-y-1.5">
+                            {rawAnalysis.urls.map((u, i) => (
+                              <div key={i} className="p-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs space-y-1 font-mono">
+                                <div className="flex items-center justify-between text-slate-800 dark:text-slate-200">
+                                  <span className="font-bold truncate max-w-[200px]">{u.url}</span>
+                                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                                    u.risk_score >= 25 
+                                      ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60' 
+                                      : 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60'
+                                  }`}>
+                                    Score: {u.risk_score}
+                                  </span>
+                                </div>
+                                <div className="text-slate-500 dark:text-slate-400 text-[10px]">
+                                  Domain: {u.domain} | Lookalike: {u.lookalike ? 'YES' : 'No'} | IP Host: {u.uses_ip ? 'YES' : 'No'}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
 
-                    {/* Right: What You Should Do */}
-                    <div className="bg-white dark:bg-[#0E152C] p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-4 flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center space-x-2 mb-3">
-                          <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                          <span>What You Should Do Right Now</span>
+                    {/* Right: Message Intelligence & Recommended Action */}
+                    <div className="bg-white dark:bg-[#0E162B] p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-4 flex flex-col justify-between">
+                      <div className="space-y-4">
+                        <h3 className="text-xs font-bold text-purple-700 dark:text-purple-400 uppercase tracking-wider flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-2">
+                          <MessageSquare className="w-4 h-4" />
+                          <span>Message & Customer Context</span>
                         </h3>
 
-                        <div className="space-y-3 text-xs text-slate-600 dark:text-slate-300">
-                          <div className="flex items-start space-x-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                            <span className="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">1</span>
-                            <div>
-                              <p className="font-bold text-slate-900 dark:text-white">Do Not Share OTPs or Passwords</p>
-                              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Never disclose verification codes sent to your phone or email.</p>
-                            </div>
+                        <div className="grid grid-cols-2 gap-3 text-xs">
+                          <div>
+                            <span className="text-slate-500 dark:text-slate-400 font-medium">Category:</span>
+                            <p className="font-semibold text-slate-900 dark:text-white">{rawAnalysis.category || 'General'}</p>
                           </div>
+                          <div>
+                            <span className="text-slate-500 dark:text-slate-400 font-medium">Issue Summary:</span>
+                            <p className="font-semibold text-slate-900 dark:text-white">{rawAnalysis.issue || 'Inquiry'}</p>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 dark:text-slate-400 font-medium">Sentiment:</span>
+                            <div className="mt-0.5"><SentimentBadge sentiment={rawAnalysis.sentiment || 'Neutral'} /></div>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 dark:text-slate-400 font-medium">Urgency:</span>
+                            <p className="font-semibold text-slate-900 dark:text-white">{rawAnalysis.urgency || 'Normal'}</p>
+                          </div>
+                        </div>
 
-                          <div className="flex items-start space-x-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                            <span className="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">2</span>
-                            <div>
-                              <p className="font-bold text-slate-900 dark:text-white">Ignore Unverified Links</p>
-                              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Open your web browser and navigate directly to the verified official website.</p>
-                            </div>
-                          </div>
-
-                          <div className="flex items-start space-x-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-800">
-                            <span className="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">3</span>
-                            <div>
-                              <p className="font-bold text-slate-900 dark:text-white">Block & Mark As Spam</p>
-                              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Report the message as spam/fraud in your messaging app or email client.</p>
-                            </div>
-                          </div>
+                        {/* Recommended Action Box */}
+                        <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                          <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
+                            Recommended Safety Action:
+                          </span>
+                          <p className="text-xs font-semibold p-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 border border-purple-200 dark:border-purple-800/60 leading-relaxed">
+                            {sec.recommended_action || rawAnalysis.recommended_action || 'Do not click links or share credentials.'}
+                          </p>
                         </div>
                       </div>
 
-                      {/* Actions Bar */}
+                      {/* Share & Copy Bar */}
                       <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center space-x-2">
                           <button
@@ -857,7 +766,7 @@ export function PublicScamChecker() {
           <div className="space-y-6 animate-fade-in">
             
             {/* Safety Rules Grid */}
-            <div className="bg-white dark:bg-[#0E152C] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-4">
+            <div className="bg-white dark:bg-[#0E162B] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-4">
               <div>
                 <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-tight">
                   Essential Safety Rules to Avoid Online Fraud
@@ -891,7 +800,7 @@ export function PublicScamChecker() {
             </div>
 
             {/* Interactive FAQ Accordion */}
-            <div className="bg-white dark:bg-[#0E152C] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-4">
+            <div className="bg-white dark:bg-[#0E162B] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-4">
               <div className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                 <HelpCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 <span>Frequently Asked Questions</span>

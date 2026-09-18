@@ -17,10 +17,13 @@ export async function analyzeNewConversation(req, res) {
       return res.status(400).json({ error: 'Message text is required for analysis' });
     }
 
+    const VALID_CHANNELS = ['Email', 'Chat', 'Support Ticket', 'Contact Form', 'Social Media'];
+    const validChannel = VALID_CHANNELS.includes(channel) ? channel : 'Email';
+
     const aiResult = await analyzeConversationWithAI({
       message,
       conversationHistory: conversation_history,
-      channel,
+      channel: validChannel,
       customerName: customer_name,
       customerEmail: customer_email
     });
@@ -34,7 +37,7 @@ export async function analyzeNewConversation(req, res) {
       const convInfo = db.prepare(`
         INSERT INTO conversations (external_id, customer_name, customer_email, channel, message, conversation_history, status, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?, ?, 'Open', ?, ?)
-      `).run(extId, customer_name, customer_email, channel, message, conversation_history, dateStr, dateStr);
+      `).run(extId, customer_name, customer_email, validChannel, message, conversation_history, dateStr, dateStr);
 
       convId = convInfo.lastInsertRowid;
 
