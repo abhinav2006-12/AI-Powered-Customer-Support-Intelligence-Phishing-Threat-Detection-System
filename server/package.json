@@ -6,10 +6,13 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "db:sync:supabase": "node src/scripts/migrate_to_supabase.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.36.0",
+    "@google/genai": "^2.23.0",
+    "@supabase/supabase-js": "^2.116.0",
     "better-sqlite3": "^11.8.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

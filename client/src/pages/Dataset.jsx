@@ -107,16 +107,16 @@ export function Dataset() {
     <Layout title="Dataset Management">
       <div className="space-y-6">
         {/* Action Header Card */}
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-4">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-wrap items-center justify-between gap-4 transition-colors">
           <div>
-            <h3 className="text-base font-bold text-slate-900">SQLite Intelligence Repository</h3>
-            <p className="text-xs text-slate-500">Manage, import, and seed training & evaluation datasets</p>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">SQLite Intelligence Repository</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Manage, import, and seed training & evaluation datasets</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => setShowImportModal(true)}
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-lg transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
             >
               <Upload className="w-4 h-4" />
               <span>Import Dataset (JSON)</span>
@@ -125,7 +125,7 @@ export function Dataset() {
             <button
               onClick={handleSeed}
               disabled={actionLoading}
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
             >
               <RefreshCw className={`w-4 h-4 ${actionLoading ? 'animate-spin' : ''}`} />
               <span>Generate 60 Demo Records</span>
@@ -134,7 +134,7 @@ export function Dataset() {
             <button
               onClick={handleClear}
               disabled={actionLoading}
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-rose-50 border border-rose-200 text-rose-700 font-semibold text-xs rounded-lg hover:bg-rose-100 transition-colors cursor-pointer"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800/60 text-rose-700 dark:text-rose-300 font-semibold text-xs rounded-lg hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-colors cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
               <span>Clear Database</span>
@@ -144,8 +144,8 @@ export function Dataset() {
 
         {/* Notification Banner */}
         {notification && (
-          <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center space-x-2 animate-fade-in">
-            <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-600" />
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 rounded-xl text-xs flex items-center space-x-2 animate-fade-in transition-colors">
+            <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-600 dark:text-emerald-400" />
             <span className="font-semibold">{notification}</span>
           </div>
         )}
@@ -190,15 +190,15 @@ export function Dataset() {
         </div>
 
         {/* Database Records Table Preview */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-          <div className="p-4 border-b border-slate-200">
-            <h4 className="text-sm font-bold text-slate-900">Recent Stored Database Records</h4>
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+            <h4 className="text-sm font-bold text-slate-900 dark:text-white">Recent Stored Database Records</h4>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider">
+                <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                   <th className="py-3 px-4">ID</th>
                   <th className="py-3 px-4">Customer</th>
                   <th className="py-3 px-4">Channel</th>
@@ -207,20 +207,20 @@ export function Dataset() {
                   <th className="py-3 px-4">Risk Level</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {sampleRecords.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-slate-400">Database is empty. Click "Generate 60 Demo Records" to populate.</td>
+                    <td colSpan={6} className="p-8 text-center text-slate-400 dark:text-slate-500">Database is empty. Click "Generate 60 Demo Records" to populate.</td>
                   </tr>
                 ) : (
                   sampleRecords.map((r) => (
-                    <tr key={r.id} className="hover:bg-slate-50">
-                      <td className="py-3 px-4 font-mono font-bold text-slate-700">{r.external_id || `CONV-${r.id}`}</td>
-                      <td className="py-3 px-4 font-semibold text-slate-900">{r.customer_name}</td>
-                      <td className="py-3 px-4 text-slate-600">{r.channel}</td>
-                      <td className="py-3 px-4 text-slate-800">{r.category || 'Other'}</td>
-                      <td className="py-3 px-4">{r.sentiment || 'Neutral'}</td>
-                      <td className="py-3 px-4 font-bold text-rose-600">{r.risk_level || 'LOW'}</td>
+                    <tr key={r.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <td className="py-3 px-4 font-mono font-bold text-slate-700 dark:text-slate-300">{r.external_id || `CONV-${r.id}`}</td>
+                      <td className="py-3 px-4 font-semibold text-slate-900 dark:text-white">{r.customer_name}</td>
+                      <td className="py-3 px-4 text-slate-600 dark:text-slate-300">{r.channel}</td>
+                      <td className="py-3 px-4 text-slate-800 dark:text-slate-200">{r.category || 'Other'}</td>
+                      <td className="py-3 px-4 text-slate-700 dark:text-slate-300">{r.sentiment || 'Neutral'}</td>
+                      <td className="py-3 px-4 font-bold text-rose-600 dark:text-rose-400">{r.risk_level || 'LOW'}</td>
                     </tr>
                   ))
                 )}
@@ -231,16 +231,16 @@ export function Dataset() {
 
         {/* Modal for Importing JSON Dataset */}
         {showImportModal && (
-          <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <div className="bg-white w-full max-w-xl rounded-xl border border-slate-200 shadow-xl p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 className="text-base font-bold text-slate-900 flex items-center space-x-2">
-                  <FileJson className="w-5 h-5 text-blue-600" />
+          <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+                  <FileJson className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <span>Import JSON Conversation Dataset</span>
                 </h3>
                 <button
                   onClick={() => setShowImportModal(false)}
-                  className="text-slate-400 hover:text-slate-600 font-bold"
+                  className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold cursor-pointer"
                 >
                   ✕
                 </button>
@@ -248,7 +248,7 @@ export function Dataset() {
 
               <form onSubmit={handleImportSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
                     Paste JSON Array of Conversations:
                   </label>
                   <textarea
@@ -256,7 +256,7 @@ export function Dataset() {
                     value={jsonInput}
                     onChange={(e) => setJsonInput(e.target.value)}
                     placeholder={`[\n  {\n    "customer_name": "John Doe",\n    "customer_email": "john@example.com",\n    "channel": "Email",\n    "message": "My card was charged twice..."\n  }\n]`}
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg font-mono text-xs text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                    className="w-full p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-xs text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden transition-colors"
                   />
                 </div>
 
@@ -264,14 +264,14 @@ export function Dataset() {
                   <button
                     type="button"
                     onClick={() => setShowImportModal(false)}
-                    className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg cursor-pointer"
+                    className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-lg cursor-pointer transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={actionLoading}
-                    className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm cursor-pointer disabled:opacity-50"
+                    className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm cursor-pointer disabled:opacity-50 transition-colors"
                   >
                     {actionLoading ? 'Importing & Analyzing...' : 'Import Dataset'}
                   </button>

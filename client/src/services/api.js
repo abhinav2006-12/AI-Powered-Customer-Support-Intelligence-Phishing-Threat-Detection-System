@@ -97,3 +97,15 @@ export async function seedDemoData(count = 60) {
     body: JSON.stringify({ count })
   });
 }
+
+export async function sendChatMessage(data) {
+  return fetchJson('/chat', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
+}
+
+export async function getChatSuggestions() {
+  return fetchJson('/chat/suggestions');
+}
+

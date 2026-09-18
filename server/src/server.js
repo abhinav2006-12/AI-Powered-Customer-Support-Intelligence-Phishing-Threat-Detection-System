@@ -11,6 +11,8 @@ import dashboardRoutes from './routes/dashboard.routes.js';
 import threatsRoutes from './routes/threats.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import datasetRoutes from './routes/dataset.routes.js';
+import chatRoutes from './routes/chat.routes.js';
+import { isSupabaseConfigured } from './db/supabase.js';
 
 dotenv.config();
 
@@ -49,6 +51,7 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/threats', threatsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/dataset', datasetRoutes);
+app.use('/api/chat', chatRoutes);
 app.post('/api/demo/seed', (req, res, next) => {
   req.url = '/seed';
   datasetRoutes(req, res, next);
@@ -59,6 +62,9 @@ app.get('/api/health', (req, res) => {
   return res.json({
     status: 'online',
     system: 'AI Support Intelligence & Phishing Threat Detection System',
+    database: isSupabaseConfigured ? 'Supabase PostgreSQL' : 'SQLite (better-sqlite3)',
+    supabaseConfigured: isSupabaseConfigured,
+    geminiConfigured: !!(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== ''),
     timestamp: new Date().toISOString()
   });
 });
@@ -76,5 +82,7 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Primary Database: ${isSupabaseConfigured ? 'Supabase PostgreSQL' : 'SQLite (Local)'}`);
+  console.log(`Gemini API Key configured: ${process.env.GEMINI_API_KEY ? 'YES' : 'NO (Using fallback assistant)'}`);
   console.log(`Anthropic API Key configured: ${process.env.ANTHROPIC_API_KEY ? 'YES' : 'NO (Using fallback engine)'}`);
 });

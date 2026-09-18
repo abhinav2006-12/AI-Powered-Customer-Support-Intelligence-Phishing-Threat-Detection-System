@@ -78,7 +78,7 @@ export function Conversations() {
     <Layout title="Conversations">
       <div className="space-y-4">
         {/* Filters Header Bar */}
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
           <form onSubmit={handleSearchSubmit} className="flex flex-wrap items-center gap-3">
             <div className="relative flex-1 min-w-[200px]">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -87,14 +87,14 @@ export function Conversations() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search customer name, email, issue..."
-                className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+                className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden transition-colors"
               />
             </div>
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:bg-white focus:outline-hidden"
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
             >
               <option value="">All Categories</option>
               <option value="Billing / Payment">Billing / Payment</option>
@@ -111,7 +111,7 @@ export function Conversations() {
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:bg-white focus:outline-hidden"
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
             >
               <option value="">All Priorities</option>
               <option value="Critical">Critical</option>
@@ -123,7 +123,7 @@ export function Conversations() {
             <select
               value={sentiment}
               onChange={(e) => setSentiment(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:bg-white focus:outline-hidden"
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
             >
               <option value="">All Sentiments</option>
               <option value="Negative">Negative</option>
@@ -134,7 +134,7 @@ export function Conversations() {
             <select
               value={security}
               onChange={(e) => setSecurity(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:bg-white focus:outline-hidden"
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
             >
               <option value="">All Security States</option>
               <option value="Threat">Security Threat Detected</option>
@@ -146,7 +146,7 @@ export function Conversations() {
             <select
               value={resolution}
               onChange={(e) => setResolution(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:bg-white focus:outline-hidden"
+              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
             >
               <option value="">All Resolutions</option>
               <option value="Unresolved">Unresolved</option>
@@ -164,18 +164,18 @@ export function Conversations() {
         </div>
 
         {/* Conversations Table */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
           {loading ? (
             <LoadingSpinner message="Fetching conversations from SQLite database..." />
           ) : items.length === 0 ? (
-            <div className="p-12 text-center text-slate-500">
+            <div className="p-12 text-center text-slate-500 dark:text-slate-400">
               <p className="text-sm font-medium">No conversations found matching your filters.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider">
+                  <tr className="bg-slate-50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                     <th className="py-3 px-4">ID</th>
                     <th className="py-3 px-4">Customer</th>
                     <th className="py-3 px-4">Channel</th>
@@ -188,26 +188,26 @@ export function Conversations() {
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {items.map((item) => (
                     <tr
                       key={item.id}
                       onClick={() => navigate(`/conversations/${item.id}`)}
-                      className="hover:bg-slate-50/80 transition-colors cursor-pointer"
+                      className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
                     >
-                      <td className="py-3.5 px-4 font-mono font-semibold text-slate-700">
+                      <td className="py-3.5 px-4 font-mono font-semibold text-slate-700 dark:text-slate-300">
                         {item.external_id || `CONV-${item.id}`}
                       </td>
                       <td className="py-3.5 px-4">
-                        <div className="font-semibold text-slate-900">{item.customer_name}</div>
-                        <div className="text-slate-400 text-[11px] truncate max-w-[160px]">{item.customer_email || 'N/A'}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white">{item.customer_name}</div>
+                        <div className="text-slate-400 dark:text-slate-500 text-[11px] truncate max-w-[160px]">{item.customer_email || 'N/A'}</div>
                       </td>
-                      <td className="py-3.5 px-4 text-slate-600 font-medium">
+                      <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300 font-medium">
                         {item.channel}
                       </td>
                       <td className="py-3.5 px-4">
-                        <span className="font-medium text-slate-800">{item.category || 'Other'}</span>
-                        {item.issue && <p className="text-[10px] text-slate-400 truncate max-w-[140px]">{item.issue}</p>}
+                        <span className="font-medium text-slate-800 dark:text-slate-200">{item.category || 'Other'}</span>
+                        {item.issue && <p className="text-[10px] text-slate-400 dark:text-slate-500 truncate max-w-[140px]">{item.issue}</p>}
                       </td>
                       <td className="py-3.5 px-4">
                         <SentimentBadge sentiment={item.sentiment} />
@@ -218,11 +218,11 @@ export function Conversations() {
                       <td className="py-3.5 px-4">
                         {item.threat_detected ? (
                           <div className="flex items-center space-x-1">
-                            <ShieldAlert className="w-3.5 h-3.5 text-rose-600" />
+                            <ShieldAlert className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
                             <RiskBadge level={item.risk_level} />
                           </div>
                         ) : (
-                          <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                          <span className="text-[11px] text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60">
                             Clean
                           </span>
                         )}
@@ -230,7 +230,7 @@ export function Conversations() {
                       <td className="py-3.5 px-4">
                         <ResolutionBadge status={item.resolution_status} />
                       </td>
-                      <td className="py-3.5 px-4 text-slate-400 text-[11px]">
+                      <td className="py-3.5 px-4 text-slate-400 dark:text-slate-500 text-[11px]">
                         {new Date(item.created_at).toLocaleDateString()}
                       </td>
                       <td className="py-3.5 px-4 text-right">
@@ -240,14 +240,14 @@ export function Conversations() {
                               e.stopPropagation();
                               navigate(`/conversations/${item.id}`);
                             }}
-                            className="p-1 text-slate-400 hover:text-blue-600 rounded cursor-pointer"
+                            className="p-1 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 rounded cursor-pointer transition-colors"
                             title="View Details"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
                             onClick={(e) => handleDelete(item.id, e)}
-                            className="p-1 text-slate-400 hover:text-rose-600 rounded cursor-pointer"
+                            className="p-1 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 rounded cursor-pointer transition-colors"
                             title="Delete Conversation"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -262,7 +262,7 @@ export function Conversations() {
           )}
 
           {/* Pagination */}
-          <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+          <div className="p-4 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 transition-colors">
             <span>
               Showing {items.length} of {pagination.total} records (Page {pagination.page} of {pagination.totalPages})
             </span>
@@ -270,14 +270,14 @@ export function Conversations() {
               <button
                 disabled={pagination.page <= 1}
                 onClick={() => fetchConversations(pagination.page - 1)}
-                className="p-1.5 bg-white border border-slate-200 rounded hover:bg-slate-100 disabled:opacity-40 cursor-pointer"
+                className="p-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 cursor-pointer transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 disabled={pagination.page >= pagination.totalPages}
                 onClick={() => fetchConversations(pagination.page + 1)}
-                className="p-1.5 bg-white border border-slate-200 rounded hover:bg-slate-100 disabled:opacity-40 cursor-pointer"
+                className="p-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 cursor-pointer transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

@@ -1,6 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { ProtectedRoute } from './components/common/ProtectedRoute';
+
+import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
+import { Assistant } from './pages/Assistant';
 import { AnalyzeConversation } from './pages/AnalyzeConversation';
 import { Conversations } from './pages/Conversations';
 import { ConversationDetails } from './pages/ConversationDetails';
@@ -11,18 +17,93 @@ import { Settings } from './pages/Settings';
 
 export function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/analyze" element={<AnalyzeConversation />} />
-        <Route path="/conversations" element={<Conversations />} />
-        <Route path="/conversations/:id" element={<ConversationDetails />} />
-        <Route path="/threats" element={<ThreatIntelligence />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/dataset" element={<Dataset />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+        <Routes>
+          {/* Public Login Route */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Protected Application Routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/assistant"
+            element={
+              <ProtectedRoute>
+                <Assistant />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analyze"
+            element={
+              <ProtectedRoute>
+                <AnalyzeConversation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/conversations"
+            element={
+              <ProtectedRoute>
+                <Conversations />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/conversations/:id"
+            element={
+              <ProtectedRoute>
+                <ConversationDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/threats"
+            element={
+              <ProtectedRoute>
+                <ThreatIntelligence />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <Analytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dataset"
+            element={
+              <ProtectedRoute>
+                <Dataset />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Catch-all fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+    </ThemeProvider>
   );
 }
 
