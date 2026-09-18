@@ -20,14 +20,41 @@ import {
 } from 'lucide-react';
 import { sendChatMessage, getChatSuggestions } from '../services/api';
 
+const DEFAULT_SUGGESTIONS = [
+  {
+    category: 'SOC Threat Hunting',
+    prompts: [
+      'Analyze http://paypa1-security.example/login for credential harvesting',
+      'How does AegisGuard score lookalike domains and homoglyph attacks?',
+      'What are recommended SOC actions for 2FA OTP exfiltration?'
+    ]
+  },
+  {
+    category: 'Support Copilot',
+    prompts: [
+      'Draft an empathetic refund resolution for order #ORD-98421 duplicate charge',
+      'How should support de-escalate an angry delivery delay complaint?',
+      'Summarize key customer pain points across recent billing tickets'
+    ]
+  },
+  {
+    category: 'Live Supabase Telemetry',
+    prompts: [
+      'What are the top 5 unresolved customer support issues right now?',
+      'Show telemetry breakdown of critical risk phishing incidents',
+      'Which support channel has the highest rate of threats?'
+    ]
+  }
+];
+
 export function Assistant() {
-  const [mode, setMode] = useState('soc'); // 'soc' | 'support' | 'database' | 'simulation'
+  const [mode, setMode] = useState('soc'); // 'soc' | 'support' | 'database'
   const [includeContext, setIncludeContext] = useState(true);
   const [messages, setMessages] = useState([
     {
       id: 'welcome',
       role: 'assistant',
-      text: "### 🛡️ Welcome to Aegis AI Studio (Powered by Google Gemini)\n\nI am your unified **Customer Support Intelligence & Cybersecurity Threat Copilot**.\n\n- **SOC Threat Analyst Mode:** Paste suspicious emails, links, or headers to detect lookalike domains, credential harvesting, or 2FA interceptions.\n- **Support Copilot Mode:** Draft empathetic, compliant replies to customer tickets with refund, delivery, or billing complaints.\n- **Ask Database Mode:** Query your live SQLite ticket and threat repository in natural language.\n\nSelect a suggestion below or type your query to begin.",
+      text: "### 🛡️ Welcome to Aegis AI Studio (Powered by Google Gemini)\n\nI am your unified **Customer Support Intelligence & Cybersecurity Threat Copilot**.\n\n- **SOC Threat Analyst Mode:** Paste suspicious emails, links, or headers to detect lookalike domains, credential harvesting, or 2FA interceptions.\n- **Support Copilot Mode:** Draft empathetic, compliant replies to customer tickets with refund, delivery, or billing complaints.\n- **Ask Database Mode:** Query your live Supabase ticket and threat repository in natural language.\n\nSelect a suggestion below or type your query to begin.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       engine: 'Google Gemini 2.5 Flash'
     }
@@ -35,15 +62,30 @@ export function Assistant() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState(DEFAULT_SUGGESTIONS);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
     getChatSuggestions()
-      .then(res => setSuggestions(res.suggestions || []))
-      .catch(() => {});
+      .then(res => {
+        if (Array.isArray(res?.suggestions) && res.suggestions.length > 0) {
+          // Check if it's array of objects with prompts or array of strings
+          if (typeof res.suggestions[0] === 'object' && res.suggestions[0].prompts) {
+            setSuggestions(res.suggestions);
+          } else if (typeof res.suggestions[0] === 'string') {
+            setSuggestions([
+              { category: 'Suggested Questions', prompts: res.suggestions.slice(0, 3) },
+              { category: 'Security & Phishing', prompts: DEFAULT_SUGGESTIONS[0].prompts },
+              { category: 'Customer Support', prompts: DEFAULT_SUGGESTIONS[1].prompts }
+            ]);
+          }
+        }
+      })
+      .catch(() => {
+        setSuggestions(DEFAULT_SUGGESTIONS);
+      });
   }, []);
 
   useEffect(() => {
@@ -272,7 +314,7 @@ export function Assistant() {
                   <span>{cat.category}</span>
                 </div>
                 <div className="space-y-1.5">
-                  {cat.prompts.map((p, pIdx) => (
+                  {(cat.prompts || []).map((p, pIdx) => (
                     <button
                       key={pIdx}
                       type="button"
