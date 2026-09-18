@@ -162,6 +162,8 @@ Instructions:
 }
 
 /**
+ * Intelligent deterministic fallback responses for offline or unconfigured API keys
+ */
 function generateIntelligentFallbackResponse(message, mode, dbContext) {
   const lower = message.toLowerCase();
 
