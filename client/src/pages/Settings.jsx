@@ -14,22 +14,47 @@ import {
   Sun,
   Moon,
   Monitor,
+import { 
+  Settings as SettingsIcon, 
+  ShieldCheck, 
+  Cpu, 
+  Database, 
+  Key, 
+  CheckCircle2, 
+  AlertTriangle,
+  Server,
+  Sun,
+  Moon,
+  Monitor,
   Cloud,
   Zap,
-  Sparkles
+  Sparkles,
+  RefreshCw,
+  Activity
 } from 'lucide-react';
+import { checkSystemHealth } from '../services/api';
 
 export function Settings() {
   const [health, setHealth] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [testing, setTesting] = useState(false);
   const { theme, isDark, setTheme } = useTheme();
 
+  const loadHealth = async (isManual = false) => {
+    if (isManual) setTesting(true);
+    try {
+      const data = await checkSystemHealth();
+      setHealth(data);
+    } catch (err) {
+      setHealth({ status: 'offline', error: err.message });
+    } finally {
+      setLoading(false);
+      if (isManual) setTesting(false);
+    }
+  };
+
   useEffect(() => {
-    fetch('/api/health')
-      .then(res => res.json())
-      .then(data => setHealth(data))
-      .catch(err => setHealth({ status: 'offline', error: err.message }))
-      .finally(() => setLoading(false));
+    loadHealth();
   }, []);
 
   if (loading) {
@@ -108,33 +133,66 @@ export function Settings() {
 
         {/* System Health & Cloud Database Card */}
         <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-          <div className="flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <Server className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">System Health & Database Diagnostics</h3>
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div className="flex items-center space-x-2">
+              <Server className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">System Health & Live Connection Telemetry</h3>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => loadHealth(true)}
+              disabled={testing}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800/60 hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${testing ? 'animate-spin' : ''}`} />
+              <span>{testing ? 'Pinging Services...' : 'Test Connections Now'}</span>
+            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            {/* Backend Server */}
             <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <span className="text-slate-400 font-medium">Backend REST Server:</span>
-              <p className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center space-x-1 mt-1">
-                <CheckCircle2 className="w-4 h-4" />
-                <span>ONLINE (Port 5000)</span>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400 font-medium">Backend REST Server:</span>
+                {health?.backend?.latencyMs && (
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold">
+                    ⚡ {health.backend.latencyMs}ms
+                  </span>
+                )}
+              </div>
+              <p className={`font-bold flex items-center space-x-1 mt-1.5 ${
+                health?.backend?.connected ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
+              }`}>
+                {health?.backend?.connected ? <CheckCircle2 className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
+                <span>{health?.backend?.connected ? `ONLINE (Port ${health?.backend?.port || 5000})` : 'OFFLINE (Not reachable)'}</span>
               </p>
             </div>
 
+            {/* Supabase Database */}
             <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <span className="text-slate-400 font-medium">Active Database Engine:</span>
-              <p className="font-bold text-slate-900 dark:text-white mt-1 flex items-center space-x-1.5">
-                <Database className="w-3.5 h-3.5 text-blue-500" />
-                <span>{health?.database || 'SQLite 3 (Local)'}</span>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400 font-medium">Supabase Cloud DB:</span>
+                {health?.supabase?.latencyMs && (
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold">
+                    ⚡ {health.supabase.latencyMs}ms
+                  </span>
+                )}
+              </div>
+              <p className={`font-bold flex items-center space-x-1.5 mt-1.5 ${
+                health?.supabase?.connected ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
+              }`}>
+                <Database className="w-3.5 h-3.5" />
+                <span>{health?.supabase?.connected ? 'CONNECTED & SYNCED' : 'DISCONNECTED'}</span>
               </p>
             </div>
 
+            {/* AI Intelligence API */}
             <div className="p-3 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <span className="text-slate-400 font-medium">AI Engine Model:</span>
-              <p className="font-bold text-blue-600 dark:text-blue-400 mt-1 flex items-center space-x-1">
+              <span className="text-slate-400 font-medium">AI Intelligence Engine:</span>
+              <p className="font-bold text-blue-600 dark:text-blue-400 mt-1.5 flex items-center space-x-1">
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span>Google Gemini 2.5 Flash</span>
+                <span>{health?.apis?.gemini?.configured ? 'Gemini 2.5 Flash' : 'Built-in Copilot + Heuristics'}</span>
               </p>
             </div>
           </div>
@@ -144,18 +202,20 @@ export function Settings() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Cloud className="w-4 h-4 text-emerald-500" />
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Supabase (PostgreSQL) Cloud Status</span>
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Database Engine Architecture</span>
               </div>
               <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                health?.supabaseConfigured 
-                  ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' 
-                  : 'bg-amber-100 text-amber-700 border border-amber-300'
+                health?.supabase?.connected 
+                  ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' 
+                  : 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700'
               }`}>
-                {health?.supabaseConfigured ? 'CONNECTED' : 'STANDBY (Using SQLite)'}
+                {health?.database?.primary || (health?.supabase?.connected ? 'Supabase PostgreSQL' : 'SQLite Local')}
               </span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              To connect your live Supabase project, paste your <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-[11px] text-blue-600 dark:text-blue-400">SUPABASE_URL</code> and <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-[11px] text-blue-600 dark:text-blue-400">SUPABASE_KEY</code> into <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-[11px]">server/.env</code>. Run <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-[11px]">npm run db:sync:supabase</code> in the server folder to sync records.
+              {health?.supabase?.connected 
+                ? 'Your application is connected to live Supabase PostgreSQL cloud storage. Telemetry is persisted and synchronized with client-side real-time channels.'
+                : 'Supabase cloud credentials not detected in server/.env or server is in offline standby. The system is operating securely with local SQLite database storage.'}
             </p>
           </div>
         </div>

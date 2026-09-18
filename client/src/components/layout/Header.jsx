@@ -3,6 +3,7 @@ import { Search, Bell, RefreshCw, Sparkles, CheckCircle2, LogOut, Shield } from 
 import { seedDemoData } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { ConnectionStatusIndicator } from '../common/ConnectionStatusIndicator';
 import { useNavigate } from 'react-router-dom';
 
 export function Header({ title = 'Dashboard', onSeedSuccess }) {
@@ -40,6 +41,9 @@ export function Header({ title = 'Dashboard', onSeedSuccess }) {
             className="w-full pl-9 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-purple-500 focus:bg-white dark:focus:bg-slate-900 transition-colors"
           />
         </div>
+
+        {/* Real-time System Connection Status Indicator */}
+        <ConnectionStatusIndicator />
 
         {/* Live Sync Telemetry Button */}
         <button

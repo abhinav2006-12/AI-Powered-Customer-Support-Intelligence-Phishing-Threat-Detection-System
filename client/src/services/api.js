@@ -249,3 +249,159 @@ export async function getChatSuggestions() {
     };
   }
 }
+
+/**
+ * Run comprehensive multi-point health check across:
+ * 1. Backend REST Server (Express)
+ * 2. Supabase Cloud Database (direct client check + backend validation)
+ * 3. AI Intelligence Engines (Gemini & Claude)
+ * 4. Local SQLite Database
+ */
+export async function checkSystemHealth() {
+  const result = {
+    timestamp: new Date().toISOString(),
+    overall: 'checking',
+    backend: {
+      status: 'unknown',
+      connected: false,
+      latencyMs: null,
+      port: 5000,
+      url: API_BASE || 'http://localhost:5000/api',
+      message: ''
+    },
+    supabase: {
+      status: 'unknown',
+      connected: false,
+      latencyMs: null,
+      directAccess: false,
+      message: ''
+    },
+    apis: {
+      gemini: {
+        status: 'fallback',
+        configured: false,
+        label: 'Google Gemini 2.5 Flash',
+        mode: 'Client-side fallback copilot'
+      },
+      anthropic: {
+        status: 'fallback_heuristics',
+        configured: false,
+        label: 'Anthropic Claude Sonnet 4.6',
+        mode: 'Rule-based heuristic security engine'
+      }
+    },
+    database: {
+      primary: 'Determining...',
+      sqlite: { healthy: true, driver: 'better-sqlite3' }
+    }
+  };
+
+  // 1. Probe Backend Server with Timeout
+  const backendStart = Date.now();
+  let backendData = null;
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch(`${API_BASE}/health`, {
+      signal: controller.signal,
+      headers: { 'Accept': 'application/json' }
+    });
+    clearTimeout(timeoutId);
+
+    const contentType = res.headers.get('content-type') || '';
+    if (res.ok && !contentType.includes('text/html')) {
+      backendData = await res.json();
+      result.backend = {
+        status: 'online',
+        connected: true,
+        latencyMs: Date.now() - backendStart,
+        port: backendData.backend?.port || 5000,
+        url: API_BASE || 'http://localhost:5000/api',
+        uptime: backendData.backend?.uptime,
+        message: 'Operational'
+      };
+
+      if (backendData.apis?.gemini) {
+        result.apis.gemini = {
+          ...backendData.apis.gemini,
+          mode: backendData.apis.gemini.configured ? 'Active Gemini Cloud API' : 'Fallback Copilot Engine'
+        };
+      }
+      if (backendData.apis?.anthropic) {
+        result.apis.anthropic = {
+          ...backendData.apis.anthropic,
+          mode: backendData.apis.anthropic.configured ? 'Active Anthropic Claude API' : 'Deterministic SOC Threat Rules'
+        };
+      }
+      if (backendData.database) {
+        result.database = backendData.database;
+      }
+    } else {
+      throw new Error(`HTTP ${res.status}`);
+    }
+  } catch (err) {
+    result.backend = {
+      status: 'offline',
+      connected: false,
+      latencyMs: null,
+      port: 5000,
+      url: API_BASE || 'http://localhost:5000/api',
+      message: err.name === 'AbortError' ? 'Connection timed out (4s)' : 'Server unreachable (Offline)'
+    };
+  }
+
+  // 2. Probe Supabase directly from browser
+  const sbStart = Date.now();
+  try {
+    // Light probe on conversations table count
+    const { count, error } = await supabaseService.supabase
+      .from('conversations')
+      .select('id', { count: 'exact', head: true });
+
+    if (error) throw error;
+
+    result.supabase = {
+      status: 'connected',
+      connected: true,
+      directAccess: true,
+      latencyMs: Date.now() - sbStart,
+      recordCount: count,
+      message: 'Cloud Database Active'
+    };
+  } catch (err) {
+    if (backendData?.database?.supabase?.connected) {
+      result.supabase = {
+        status: 'connected',
+        connected: true,
+        directAccess: false,
+        latencyMs: backendData.database.supabase.latencyMs || null,
+        message: 'Connected via Backend Server'
+      };
+    } else {
+      result.supabase = {
+        status: 'disconnected',
+        connected: false,
+        directAccess: false,
+        latencyMs: null,
+        message: err.message || 'Supabase unreachable'
+      };
+    }
+  }
+
+  // Database primary label resolution
+  if (!backendData) {
+    result.database.primary = result.supabase.connected ? 'Supabase PostgreSQL (Client-Direct)' : 'Offline / Standby';
+  }
+
+  // Compute Overall Status
+  if (result.backend.connected && result.supabase.connected) {
+    result.overall = 'healthy';
+  } else if (result.backend.connected || result.supabase.connected) {
+    result.overall = 'degraded';
+  } else {
+    result.overall = 'offline';
+  }
+
+  return result;
+}
+

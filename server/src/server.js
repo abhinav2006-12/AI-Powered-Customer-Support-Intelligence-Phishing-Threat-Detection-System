@@ -12,7 +12,7 @@ import threatsRoutes from './routes/threats.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import datasetRoutes from './routes/dataset.routes.js';
 import chatRoutes from './routes/chat.routes.js';
-import { isSupabaseConfigured } from './db/supabase.js';
+import { isSupabaseConfigured, testSupabaseConnection } from './db/supabase.js';
 
 dotenv.config();
 
@@ -46,14 +46,78 @@ app.post('/api/demo/seed', (req, res, next) => {
   datasetRoutes(req, res, next);
 });
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// Health check endpoint with deep connection diagnostics
+app.get('/api/health', async (req, res) => {
+  const startTime = Date.now();
+  let supabaseTest = { connected: false, configured: false, message: 'Not configured in server/.env' };
+
+  if (isSupabaseConfigured) {
+    try {
+      const sbStart = Date.now();
+      const resTest = await testSupabaseConnection();
+      supabaseTest = {
+        ...resTest,
+        latencyMs: Date.now() - sbStart
+      };
+    } catch (e) {
+      supabaseTest = { connected: false, configured: true, error: e.message, message: 'Connection check failed' };
+    }
+  }
+
+  let sqliteHealthy = true;
+  try {
+    db.prepare('SELECT 1').get();
+  } catch (e) {
+    sqliteHealthy = false;
+  }
+
+  const geminiConfigured = !!(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== '');
+  const anthropicConfigured = !!(process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_API_KEY.trim() !== '');
+  const totalResponseTime = Date.now() - startTime;
+
   return res.json({
     status: 'online',
-    system: 'AI Support Intelligence & Phishing Threat Detection System',
-    database: isSupabaseConfigured ? 'Supabase PostgreSQL' : 'SQLite (better-sqlite3)',
+    system: 'KAAVALX AI Support & Phishing Threat Detection System',
+    backend: {
+      status: 'online',
+      uptime: Math.floor(process.uptime()),
+      port: PORT,
+      timestamp: new Date().toISOString(),
+      responseTimeMs: totalResponseTime
+    },
+    database: {
+      primary: isSupabaseConfigured && supabaseTest.connected ? 'Supabase PostgreSQL' : 'SQLite (better-sqlite3)',
+      sqlite: {
+        healthy: sqliteHealthy,
+        driver: 'better-sqlite3'
+      },
+      supabase: {
+        configured: isSupabaseConfigured,
+        connected: !!supabaseTest.connected,
+        latencyMs: supabaseTest.latencyMs || null,
+        message: supabaseTest.message || (isSupabaseConfigured ? 'Configured' : 'Not configured in server/.env (using SQLite)'),
+        error: supabaseTest.error || null
+      }
+    },
+    apis: {
+      gemini: {
+        configured: geminiConfigured,
+        model: 'gemini-2.5-flash',
+        status: geminiConfigured ? 'active' : 'fallback',
+        label: 'Google Gemini 2.5 Flash'
+      },
+      anthropic: {
+        configured: anthropicConfigured,
+        model: 'claude-sonnet-4-6',
+        status: anthropicConfigured ? 'active' : 'fallback_heuristics',
+        label: 'Anthropic Claude Sonnet 4.6'
+      }
+    },
+    // Backwards compatibility
+    database_name: isSupabaseConfigured ? 'Supabase PostgreSQL' : 'SQLite (better-sqlite3)',
     supabaseConfigured: isSupabaseConfigured,
-    geminiConfigured: !!(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== ''),
+    geminiConfigured: geminiConfigured,
+    anthropicConfigured: anthropicConfigured,
     timestamp: new Date().toISOString()
   });
 });
