@@ -10,6 +10,7 @@
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://ai-powered-customer-support-intelli.vercel.app/)
 [![Public Scam Checker](https://img.shields.io/badge/Public%20Portal-%2Fverify-8B5CF6?style=for-the-badge&logo=shield)](http://localhost:5173/verify)
+[![Scam Checker Guide](https://img.shields.io/badge/Public%20Portal-Full%20Guide-6366F1?style=for-the-badge&logo=shield)](VERIFY_PORTAL_GUIDE.md)
 [![Admin Panel Guide](https://img.shields.io/badge/Admin%20Panel-Full%20Guide-EC4899?style=for-the-badge&logo=bookstack)](ADMIN_PANEL_GUIDE.md)
 [![Database](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
 [![AI Engine](https://img.shields.io/badge/AI%20Engine-Google%20Gemini%202.5-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
@@ -18,28 +19,29 @@
 
 > **An enterprise-grade, full-stack intelligence platform that unifies AI-driven Customer Support Ticket Analysis with Automated Real-Time Cybersecurity Phishing Threat Detection, Public Consumer Scam Verification, and SOC Triage.**
 >
-> 📖 *For a complete walkthrough of all Admin & SOC Panel features, see the [Admin Panel Operational Manual (ADMIN_PANEL_GUIDE.md)](ADMIN_PANEL_GUIDE.md).*
+> 🛡️ *[Public Scam Checker Operational Guide (VERIFY_PORTAL_GUIDE.md)](VERIFY_PORTAL_GUIDE.md)* • 📊 *[Admin & SOC Panel Operational Manual (ADMIN_PANEL_GUIDE.md)](ADMIN_PANEL_GUIDE.md)*
 
 ---
 
 ## 📌 Table of Contents
 1. [System Overview & Value Proposition](#1-system-overview--value-proposition)
 2. [Public Scam Verification Portal (`/verify`)](#2-public-scam-verification-portal-verify)
-3. [Enterprise SOC & Support Dashboard](#3-enterprise-soc--support-dashboard)
-4. [Admin & SOC Panel Operational Manual (`ADMIN_PANEL_GUIDE.md`)](ADMIN_PANEL_GUIDE.md)
-5. [Live Demo & Login Credentials](#4-live-demo--login-credentials)
-6. [System Architecture & Tech Stack](#5-system-architecture--tech-stack)
-7. [Database Schema (Supabase PostgreSQL & SQLite)](#6-database-schema)
-8. [Cybersecurity & Phishing Detection Engine](#7-cybersecurity--phishing-detection-engine)
-9. [Customer Support NLP & Intelligence Engine](#8-customer-support-nlp--intelligence-engine)
-10. [AI Copilot Studio & Public Scam Advisor](#9-ai-copilot-studio--public-scam-advisor)
-11. [Complete REST API Documentation](#10-complete-rest-api-documentation)
-12. [Local Development & Installation Guide](#11-local-development--installation-guide)
-13. [Supabase Cloud Setup & Data Migration](#12-supabase-cloud-setup--data-migration)
-14. [Vercel Deployment Guide](#13-vercel-deployment-guide)
-15. [Project Directory Structure](#14-project-directory-structure)
-16. [Demo Scenarios & Test Cases](#15-demo-scenarios--test-cases)
-17. [License & Acknowledgments](#16-license--acknowledgments)
+3. [Public Scam Checker Guide (`VERIFY_PORTAL_GUIDE.md`)](VERIFY_PORTAL_GUIDE.md)
+4. [Enterprise SOC & Support Dashboard](#3-enterprise-soc--support-dashboard)
+5. [Admin & SOC Panel Operational Manual (`ADMIN_PANEL_GUIDE.md`)](ADMIN_PANEL_GUIDE.md)
+6. [Live Demo & Login Credentials](#4-live-demo--login-credentials)
+7. [System Architecture & Tech Stack](#5-system-architecture--tech-stack)
+8. [Database Schema (Supabase PostgreSQL & SQLite)](#6-database-schema)
+9. [Cybersecurity & Phishing Detection Engine](#7-cybersecurity--phishing-detection-engine)
+10. [Customer Support NLP & Intelligence Engine](#8-customer-support-nlp--intelligence-engine)
+11. [AI Copilot Studio & Public Scam Advisor](#9-ai-copilot-studio--public-scam-advisor)
+12. [Complete REST API Documentation](#10-complete-rest-api-documentation)
+13. [Local Development & Installation Guide](#11-local-development--installation-guide)
+14. [Supabase Cloud Setup & Data Migration](#12-supabase-cloud-setup--data-migration)
+15. [Vercel Deployment Guide](#13-vercel-deployment-guide)
+16. [Project Directory Structure](#14-project-directory-structure)
+17. [Demo Scenarios & Test Cases](#15-demo-scenarios--test-cases)
+18. [License & Acknowledgments](#16-license--acknowledgments)
 
 ---
 
