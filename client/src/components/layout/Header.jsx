@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Bell, RefreshCw, Sparkles, CheckCircle2, LogOut, Shield } from 'lucide-react';
+import { Search, RefreshCw, Sparkles, CheckCircle2, LogOut, Shield } from 'lucide-react';
 import { seedDemoData } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../common/ThemeToggle';
@@ -28,25 +28,18 @@ export function Header({ title = 'Dashboard', onSeedSuccess }) {
 
   return (
     <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4 sticky top-0 z-20 flex items-center justify-between shadow-xs transition-colors duration-200">
-      <div>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{title}</h2>
+      <div className="flex items-center space-x-4">
+        <div>
+          <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{title}</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400">SOC Threat Hunting & Support Intelligence Engine</p>
+        </div>
       </div>
 
       <div className="flex items-center space-x-3">
-        {/* Search bar */}
-        <div className="relative w-64 hidden md:block">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search tickets, URLs, emails..."
-            className="w-full pl-9 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-purple-500 focus:bg-white dark:focus:bg-slate-900 transition-colors"
-          />
-        </div>
-
-        {/* Real-time System Connection Status Indicator */}
+        {/* Database Live Health Status Indicator */}
         <ConnectionStatusIndicator />
 
-        {/* Live Sync Telemetry Button */}
+        {/* Sync Feeds Trigger */}
         <button
           onClick={handleSync}
           disabled={seeding}
@@ -67,12 +60,6 @@ export function Header({ title = 'Dashboard', onSeedSuccess }) {
             <span>{notification}</span>
           </div>
         )}
-
-        {/* Notification Icon */}
-        <div className="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
-        </div>
 
         {/* User Chip */}
         {user && (
