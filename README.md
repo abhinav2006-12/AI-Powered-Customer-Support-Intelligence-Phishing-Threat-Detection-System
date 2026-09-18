@@ -442,7 +442,6 @@ You can test the system using the built-in presets on the **Analyze Conversation
 ## 15. License & Acknowledgments
 
 - **Development**: Engineered and developed with pride by **APEX**.
-- **Project Author**: Abhinav ([@abhinav2006-12](https://github.com/abhinav2006-12))
 - **License**: MIT Open Source License.
 - **Built with**: React, Vite, Tailwind CSS, Node.js, Express, Better-SQLite3, Supabase, Google Gemini, and Recharts.
 
