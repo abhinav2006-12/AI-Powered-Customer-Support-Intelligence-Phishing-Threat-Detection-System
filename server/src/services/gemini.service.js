@@ -156,7 +156,7 @@ Instructions:
   return {
     reply: fallback,
     mode,
-    engine: 'Aegis Intelligence Engine (Fallback)',
+    engine: 'KAAVALX Intelligence Engine (Fallback)',
     contextIncluded: !!dbContext
   };
 }

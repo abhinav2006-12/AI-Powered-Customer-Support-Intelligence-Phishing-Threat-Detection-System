@@ -12,7 +12,7 @@ const VALID_CREDENTIALS = {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem('kaavalx_auth_user') || localStorage.getItem('aegisguard_auth_user');
+      const savedUser = localStorage.getItem('kaavalx_auth_user');
       return savedUser ? JSON.parse(savedUser) : null;
     } catch {
       return null;
@@ -48,7 +48,6 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('kaavalx_auth_user');
-    localStorage.removeItem('aegisguard_auth_user');
   };
 
   return (

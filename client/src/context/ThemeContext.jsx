@@ -10,7 +10,7 @@ const ThemeContext = createContext({
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try {
-      const saved = localStorage.getItem('kaavalx_theme') || localStorage.getItem('aegisguard_theme');
+      const saved = localStorage.getItem('kaavalx_theme');
       return (saved === 'light' || saved === 'dark') ? saved : 'dark';
     } catch {
       return 'dark';

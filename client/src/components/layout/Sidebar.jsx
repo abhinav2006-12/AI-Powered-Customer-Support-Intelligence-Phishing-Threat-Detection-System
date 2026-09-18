@@ -26,7 +26,7 @@ export function Sidebar() {
 
   const navItems = [
     { label: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { label: 'Aegis AI Copilot', path: '/assistant', icon: Bot },
+    { label: 'KAAVALX AI Copilot', path: '/assistant', icon: Bot },
     { label: 'Analyze Conversation', path: '/analyze', icon: Sparkles },
     { label: 'Conversations', path: '/conversations', icon: MessageSquare },
     { label: 'Threat Intelligence', path: '/threats', icon: ShieldAlert },

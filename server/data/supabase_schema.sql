@@ -1,5 +1,5 @@
 -- ====================================================================
--- AegisGuard AI — Supabase PostgreSQL Database Schema
+-- KAAVALX — Supabase PostgreSQL Database Schema
 -- Customer Support Intelligence & Phishing Threat Detection System
 -- ====================================================================
 
