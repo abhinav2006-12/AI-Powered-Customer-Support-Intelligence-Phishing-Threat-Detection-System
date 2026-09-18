@@ -1,4 +1,12 @@
-# 🛡️ AegisGuard AI — Customer Support Intelligence & Phishing Threat Detection System
+<div align="center">
+  <img src="assets/logo.png" alt="KAAVALX Logo" width="700"/>
+  <h1>KAAVALX</h1>
+  <p><strong>AI-Powered Customer Support Intelligence & Phishing Threat Detection System</strong></p>
+  <p>
+    <img src="assets/apex-logo.png" alt="APEX Logo" width="32" style="vertical-align: middle; margin-right: 6px;"/>
+    <strong>Developed by APEX</strong>
+  </p>
+</div>
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://ai-powered-customer-support-intelli.vercel.app/)
 [![Database](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
@@ -37,7 +45,7 @@ Enterprise customer support desks face tens of thousands of incoming customer in
 - **Credential harvesting forms** designed to steal admin credentials.
 - **2FA/OTP exfiltration** and urgent coercion tactics.
 
-**AegisGuard AI** solves both challenges simultaneously in a single, high-throughput pipeline:
+**KAAVALX** solves both challenges simultaneously in a single, high-throughput pipeline:
 1. **Support Intelligence**: Decodes what the customer is asking, categorizes the issue, detects sentiment & emotional urgency, checks resolution status, and recommends agent workflows.
 2. **Cybersecurity Intelligence**: Extracts embedded links/emails, evaluates structural domain risk, flags social engineering techniques, calculates a deterministic **Risk Score (0–100)** with assigned **Risk Level (LOW / MEDIUM / HIGH / CRITICAL)**, and provides actionable **SOC Containment Recommendations**.
 
@@ -47,7 +55,7 @@ Enterprise customer support desks face tens of thousands of incoming customer in
 
 - 🔐 **Role-Based Authentication**: Secure authentication gate with session persistence in local storage and rapid demo auto-fill credentials.
 - 🌓 **Dynamic Theme Switching (Dark & Light Mode)**: Full-featured dark/light theme toggle with high-contrast cybersecurity SOC aesthetics and persistent user preference.
-- 🤖 **Aegis AI Copilot Studio (Google Gemini 2.5 Flash)**:
+- 🤖 **KAAVALX AI Copilot Studio (Google Gemini 2.5 Flash)**:
   - **Fullscreen AI Studio (`/assistant`)**: Tri-mode chat environment (SOC Threat Hunting, Customer Support Copilot, and Live Database Telemetry).
   - **Global Floating Widget**: Draggable/accessible AI drawer across all application routes.
 - ⚡ **Dual-Database Architecture (Cloud + Local)**:
@@ -71,11 +79,11 @@ Enterprise customer support desks face tens of thousands of incoming customer in
 | Attribute | Details |
 | :--- | :--- |
 | **Live Deployed App** | [https://ai-powered-customer-support-intelli.vercel.app/](https://ai-powered-customer-support-intelli.vercel.app/) |
-| **Demo Email** | `kavalx@kavalx.in` |
-| **Demo Password** | `kavalx@2026` |
+| **Default User** | `kavalx@kavalx.in` |
+| **Password** | *[Encrypted & Auto-filled directly on login]* |
 | **Role** | `SOC Incident Responder & Admin` |
 
-> *Tip: Click the **"Auto Fill Demo Credentials"** button on the login screen to sign in instantly.*
+> *Tip: Click the **"Auto Fill"** button on the login screen to sign in instantly without typing credentials.*
 
 ---
 
@@ -165,7 +173,7 @@ Stores parsed domains, hostnames, protocol analysis (`http` vs `https`), IP host
 
 ## 6. Cybersecurity & Phishing Detection Engine
 
-AegisGuard uses a multi-layered detection matrix combining deterministic structural heuristics with AI:
+KAAVALX uses a multi-layered detection matrix combining deterministic structural heuristics with AI:
 
 ### Risk Calculation Matrix:
 | Indicator | Heuristic Condition | Risk Weight |
@@ -198,7 +206,7 @@ The support intelligence module parses interactions into actionable business tel
 
 ## 8. AI Copilot Studio (Gemini Integration)
 
-AegisGuard incorporates **Google Gemini 2.5 Flash** for natural-language analysis:
+KAAVALX incorporates **Google Gemini 2.5 Flash** for natural-language analysis:
 
 1. 🛡️ **SOC Threat Analyst Mode**:
    - Paste suspicious emails, raw headers, or URLs to receive immediate malware analysis, threat vector mapping, and remediation steps.
@@ -268,8 +276,8 @@ DATABASE_PATH=./data/app.db
 GEMINI_API_KEY=your_gemini_api_key_here
 
 # Supabase Cloud Database (Optional: for cloud syncing)
-SUPABASE_URL=https://ampxaiywsclfzsrdihcw.supabase.co
-SUPABASE_KEY=sb_publishable_DIYbfVCvUimEohVQdirakg_SdoLeVAI
+SUPABASE_URL=your_supabase_project_url_here
+SUPABASE_KEY=your_supabase_anon_key_here
 ```
 
 ### Step 4: Run the Application
@@ -294,7 +302,7 @@ Open your browser and visit **`http://localhost:5173`**.
 
 ## 11. Supabase Cloud Setup & Data Migration
 
-AegisGuard includes full support for Supabase PostgreSQL:
+KAAVALX includes full support for Supabase PostgreSQL:
 
 1. **Create Tables in Supabase**:
    - Open your project in [Supabase Dashboard](https://supabase.com/dashboard).
@@ -319,8 +327,8 @@ To deploy the frontend to Vercel:
    - **Framework Preset**: `Vite`
    - **Root Directory**: Leave blank (monorepo build scripts in root `package.json` handle `client/` compilation) or set to `client`.
    - **Environment Variables**:
-     - `VITE_SUPABASE_URL`: `https://ampxaiywsclfzsrdihcw.supabase.co`
-     - `VITE_SUPABASE_KEY`: `sb_publishable_DIYbfVCvUimEohVQdirakg_SdoLeVAI`
+     - `VITE_SUPABASE_URL`: `your_supabase_project_url_here`
+     - `VITE_SUPABASE_KEY`: `your_supabase_anon_key_here`
 3. Click **Deploy**.
 
 ---
@@ -413,7 +421,7 @@ You can test the system using the built-in presets on the **Analyze Conversation
 ### Scenario 1: Critical Phishing Attack (Lookalike + OTP Theft)
 - **Input Text**:
   > *"URGENT! Your PayPal security notice: Unauthorized transaction of $450 detected. Verify your account immediately at http://paypa1-security.example/login and enter your 6-digit OTP code to avoid account suspension within 24 hours."*
-- **AegisGuard Output**:
+- **KAAVALX Output**:
   - **Risk Score**: `95/100` (CRITICAL)
   - **Threat Flags**: Lookalike Domain (`paypa1-security.example`), Credential Harvesting, OTP Interception, High Urgency.
   - **SOC Action**: *Block sender domain, quarantine user session, and issue credential reset warning.*
@@ -421,7 +429,7 @@ You can test the system using the built-in presets on the **Analyze Conversation
 ### Scenario 2: Legitimate High-Priority Customer Complaint
 - **Input Text**:
   > *"My credit card was charged $120 twice for invoice #INV-98214 on September 15. Please refund the duplicate payment immediately as this was an automated billing error."*
-- **AegisGuard Output**:
+- **KAAVALX Output**:
   - **Risk Score**: `0/100` (CLEAN / LOW)
   - **Category**: `Billing & Payments`
   - **Sentiment**: `Negative` (Dissatisfied)
@@ -433,6 +441,13 @@ You can test the system using the built-in presets on the **Analyze Conversation
 
 ## 15. License & Acknowledgments
 
+- **Development**: Engineered and developed with pride by **APEX**.
+- **Project Author**: Abhinav ([@abhinav2006-12](https://github.com/abhinav2006-12))
 - **License**: MIT Open Source License.
 - **Built with**: React, Vite, Tailwind CSS, Node.js, Express, Better-SQLite3, Supabase, Google Gemini, and Recharts.
-- **Author**: Abhinav ([@abhinav2006-12](https://github.com/abhinav2006-12))
+
+<div align="center">
+  <br/>
+  <img src="assets/apex-logo.png" alt="Developed by APEX" width="130"/>
+  <p><strong>Engineered by APEX</strong></p>
+</div>

@@ -42,7 +42,7 @@ export function FloatingChatWidget() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: "👋 Hello! I'm **Aegis Copilot** powered by **Google Gemini**.\n\nChoose a mode above to triage security threats, draft customer support replies, or inspect live database telemetry.",
+      text: "👋 Hello! I'm **KAAVALX Copilot** powered by **Google Gemini**.\n\nChoose a mode above to triage security threats, draft customer support replies, or inspect live database telemetry.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -126,7 +126,7 @@ export function FloatingChatWidget() {
       {
         id: 'welcome',
         role: 'assistant',
-        text: "👋 Chat cleared. How can I assist you with **AegisGuard** intelligence today?",
+        text: "👋 Chat cleared. How can I assist you with **KAAVALX** intelligence today?",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -179,17 +179,17 @@ export function FloatingChatWidget() {
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="group relative flex items-center justify-center p-3.5 bg-gradient-to-tr from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full shadow-2xl shadow-blue-500/40 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer ring-4 ring-white/20 dark:ring-slate-800/80"
-            title="Open Aegis Copilot (Gemini AI Assistant)"
+            className="group relative flex items-center justify-center p-3.5 bg-gradient-to-tr from-purple-600 via-violet-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-full shadow-2xl shadow-purple-500/40 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer ring-4 ring-white/20 dark:ring-purple-900/40"
+            title="Open KAAVALX Copilot (Gemini AI Assistant)"
           >
             <Bot className="w-6 h-6 animate-pulse" />
             
             {/* Ambient Pulse Ring */}
-            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-900 rounded-full"></span>
+            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-purple-400 border-2 border-slate-900 rounded-full"></span>
             
             {/* Tooltip on hover */}
             <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-slate-900 text-white text-xs font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg pointer-events-none hidden sm:block">
-              Aegis AI Copilot
+              KAAVALX AI Copilot
             </span>
           </button>
         )}
@@ -202,13 +202,13 @@ export function FloatingChatWidget() {
           {/* Header Bar */}
           <div className="p-3.5 bg-gradient-to-r from-slate-900 via-[#131C31] to-slate-900 text-white flex items-center justify-between border-b border-slate-800 flex-shrink-0">
             <div className="flex items-center space-x-2.5">
-              <div className="p-1.5 bg-blue-600 rounded-lg text-white shadow-xs">
+              <div className="p-1.5 bg-purple-600 rounded-lg text-white shadow-xs">
                 <Bot className="w-4 h-4" />
               </div>
               <div>
                 <div className="flex items-center space-x-1.5">
-                  <h3 className="text-xs font-bold tracking-tight">Aegis AI Copilot</h3>
-                  <span className="text-[10px] bg-blue-500/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.2 rounded font-medium">Gemini Flash</span>
+                  <h3 className="text-xs font-bold tracking-tight">KAAVALX AI Copilot</h3>
+                  <span className="text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/30 px-1.5 py-0.2 rounded font-medium">Gemini Flash</span>
                 </div>
                 <p className="text-[10px] text-slate-400">SOC & Support Intelligence</p>
               </div>
@@ -297,7 +297,7 @@ export function FloatingChatWidget() {
                 <div
                   className={`max-w-[88%] rounded-2xl p-3 shadow-xs relative group ${
                     msg.role === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-xs'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-br-xs'
                       : 'bg-white dark:bg-slate-800/90 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700/70 rounded-bl-xs'
                   }`}
                 >
@@ -381,12 +381,12 @@ export function FloatingChatWidget() {
                   ? 'Ask to draft customer response or explain policy...'
                   : 'Ask about live SQLite tickets, categories, or metrics...'
               }
-              className="flex-1 px-3.5 py-2 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-slate-900 transition-all"
+              className="flex-1 px-3.5 py-2 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-hidden focus:ring-2 focus:ring-purple-500 focus:bg-white dark:focus:bg-slate-900 transition-all"
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="p-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition-colors cursor-pointer disabled:opacity-40"
+              className="p-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl shadow-md transition-colors cursor-pointer disabled:opacity-40"
               title="Send Message"
             >
               <Send className="w-4 h-4" />

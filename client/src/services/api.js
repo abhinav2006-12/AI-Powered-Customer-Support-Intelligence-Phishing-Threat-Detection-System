@@ -217,10 +217,10 @@ export async function sendChatMessage(data) {
       if (msg.includes('phish') || msg.includes('threat') || msg.includes('url')) {
         reply = `🛡️ **SOC Intelligence Assessment**:\n- **Analysis**: Flagged potential credential harvesting or malicious domain lookalikes.\n- **Recommended Action**: Quarantine incoming sender, submit domain to SOC blocklist, and alert user to never enter 2FA credentials.`;
       } else {
-        reply = `🛡️ **AegisGuard SOC Threat Copilot**:\nI have evaluated the security context. All 61 telemetry events in Supabase are monitored with zero undetected critical zero-day anomalies. How can I assist with your threat hunting today?`;
+        reply = `🛡️ **KAAVALX SOC Threat Copilot**:\nI have evaluated the security context. All 61 telemetry events in database are monitored with zero undetected critical zero-day anomalies. How can I assist with your threat hunting today?`;
       }
     } else {
-      reply = `✨ **Aegis Customer Support Copilot**:\nI am ready to help draft responses, summarize ticket inquiries, or assess customer sentiment. What ticket would you like to review?`;
+      reply = `✨ **KAAVALX Customer Support Copilot**:\nI am ready to help draft responses, summarize ticket inquiries, or assess customer sentiment. What ticket would you like to review?`;
     }
 
     return {

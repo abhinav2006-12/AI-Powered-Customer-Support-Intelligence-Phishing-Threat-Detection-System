@@ -62,14 +62,14 @@ export async function generateChatResponse({ message, history = [], mode = 'soc'
   const dbContext = includeContext ? getLiveSystemContext() : null;
 
   const systemInstructions = `
-You are "Aegis Copilot", an elite AI Assistant embedded in AegisGuard — an enterprise Customer Support Intelligence & Phishing Threat Detection System.
+You are "KAAVALX Copilot", an elite AI Assistant embedded in KAAVALX — an enterprise Customer Support Intelligence & Phishing Threat Detection System.
 You specialize in two interconnected domains:
 1. CYBERSECURITY & SOC THREAT INTELLIGENCE: Phishing detection, lookalike domains (e.g. paypa1-security.example), credential harvesting, 2FA/OTP interception, social engineering tactics, and risk mitigation.
 2. CUSTOMER SUPPORT OPERATIONS: Issue diagnosis, root-cause categorization, sentiment analysis, and drafting professional, empathetic responses to angry/frustrated customer tickets.
 
 Current Active Mode: ${mode.toUpperCase()}
 ${dbContext ? `
-=== LIVE AEGISGUARD DATABASE CONTEXT ===
+=== LIVE KAAVALX DATABASE CONTEXT ===
 - Total Conversations in DB: ${dbContext.kpi.totalConversations}
 - Unresolved Complaints: ${dbContext.kpi.unresolvedCases}
 - Total Flagged Security Threats: ${dbContext.kpi.totalThreats} (Critical: ${dbContext.kpi.criticalThreats})
@@ -83,7 +83,7 @@ Instructions:
 - Provide clear, actionable, structured insights in clean Markdown.
 - When analyzing text/URLs for threats, break down the Threat Type, Risk Score (0-100), Attack Vector, and Recommended SOC Actions.
 - When drafting customer support replies, make them empathetic, professional, clear, and reassuring.
-- If asked about live system data or database metrics, reference the live AegisGuard database context provided above.
+- If asked about live system data or database metrics, reference the live KAAVALX database context provided above.
 `.trim();
 
   // If Gemini API Key is provided, call Google Gemini
@@ -171,7 +171,7 @@ function generateIntelligentFallbackResponse(message, mode, dbContext) {
   if (lower.includes('http') || lower.includes('.com') || lower.includes('.example') || lower.includes('phish') || lower.includes('threat') || lower.includes('scam') || lower.includes('otp') || lower.includes('password')) {
     const isLookalike = lower.includes('paypa1') || lower.includes('bank') || lower.includes('security') || lower.includes('login') || lower.includes('verify');
     
-    return `### 🛡️ AegisGuard Threat Intelligence Analysis
+    return `### 🛡️ KAAVALX Threat Intelligence Analysis
 
 **Assessment:** ${isLookalike ? '🚨 **CRITICAL SECURITY THREAT DETECTED**' : '⚠️ **POTENTIAL SUSPICIOUS PATTERN**'}
 
@@ -195,7 +195,7 @@ function generateIntelligentFallbackResponse(message, mode, dbContext) {
   // 2. Live Database & Metrics queries
   if (lower.includes('database') || lower.includes('metrics') || lower.includes('how many') || lower.includes('status') || lower.includes('unresolved') || lower.includes('summary')) {
     if (dbContext) {
-      return `### 📊 Live AegisGuard Intelligence Summary
+      return `### 📊 Live KAAVALX Intelligence Summary
 
 Here is the current operational status from the SQLite database:
 
@@ -217,7 +217,7 @@ ${dbContext.recentThreats.slice(0, 3).map(t => `- **${t.customer_name}**: ${t.th
   if (lower.includes('reply') || lower.includes('draft') || lower.includes('response') || lower.includes('email') || lower.includes('refund') || lower.includes('complaint')) {
     return `### ✉️ Suggested Customer Support Response
 
-**Subject:** Update regarding your support request — AegisGuard Care Team
+**Subject:** Update regarding your support request — KAAVALX Care Team
 
 Dear Customer,
 
@@ -234,13 +234,13 @@ If you have any further questions or need additional assistance, simply reply di
 
 Warm regards,  
 **Customer Support Specialist**  
-*AegisGuard Support Operations*`;
+*KAAVALX Support Operations*`;
   }
 
   // Default Guidance Response
-  return `### 🤖 Aegis Copilot Ready
+  return `### 🤖 KAAVALX Copilot Ready
 
-I am connected to your **AegisGuard Customer Support & Threat Detection System**. Here is what you can ask me to do:
+I am connected to your **KAAVALX Customer Support & Threat Detection System**. Here is what you can ask me to do:
 
 1. **Analyze Suspicious Content:** Paste any email text, chat snippet, or URL to perform instant phishing triage and calculate a 0–100 risk score.
 2. **Draft Support Responses:** Ask me to write empathetic, policy-compliant replies to angry customers with duplicate charges or order delays.

@@ -5,14 +5,14 @@ const AuthContext = createContext(null);
 const VALID_CREDENTIALS = {
   email: 'kavalx@kavalx.in',
   password: 'kavalx@2026',
-  name: 'KavalX Security Admin',
+  name: 'KAAVALX Security Admin',
   role: 'SOC Incident Responder & Admin'
 };
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
-      const savedUser = localStorage.getItem('aegisguard_auth_user');
+      const savedUser = localStorage.getItem('kaavalx_auth_user') || localStorage.getItem('aegisguard_auth_user');
       return savedUser ? JSON.parse(savedUser) : null;
     } catch {
       return null;
@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
         loginTime: new Date().toISOString()
       };
       setUser(userData);
-      localStorage.setItem('aegisguard_auth_user', JSON.stringify(userData));
+      localStorage.setItem('kaavalx_auth_user', JSON.stringify(userData));
       return { success: true };
     } else {
       return { 
@@ -47,6 +47,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('kaavalx_auth_user');
     localStorage.removeItem('aegisguard_auth_user');
   };
 

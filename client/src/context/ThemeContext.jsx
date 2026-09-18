@@ -10,7 +10,7 @@ const ThemeContext = createContext({
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try {
-      const saved = localStorage.getItem('aegisguard_theme');
+      const saved = localStorage.getItem('kaavalx_theme') || localStorage.getItem('aegisguard_theme');
       return (saved === 'light' || saved === 'dark') ? saved : 'dark';
     } catch {
       return 'dark';
@@ -40,7 +40,7 @@ export function ThemeProvider({ children }) {
         body.classList.add('light');
       }
     }
-    localStorage.setItem('aegisguard_theme', theme);
+    localStorage.setItem('kaavalx_theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

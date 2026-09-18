@@ -38,13 +38,22 @@ export function Sidebar() {
   return (
     <aside className="w-64 bg-white dark:bg-[#0F172A] text-slate-600 dark:text-slate-400 flex flex-col h-screen sticky top-0 border-r border-slate-200 dark:border-slate-800 z-30 transition-colors duration-200">
       {/* Brand Header */}
-      <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center space-x-3">
-        <div className="p-2 bg-blue-600 rounded-lg text-white shadow-md shadow-blue-500/20">
-          <ShieldCheck className="w-6 h-6" />
+      <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center space-x-3">
+        <div className="w-10 h-10 rounded-xl bg-black border border-purple-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-purple-500/25 flex-shrink-0">
+          <img 
+            src="/logo.png" 
+            alt="KAAVALX Logo" 
+            className="w-full h-full object-cover transform scale-150"
+          />
         </div>
-        <div>
-          <h1 className="text-base font-bold text-slate-900 dark:text-white tracking-tight">AegisGuard AI</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Support & Threat Intelligence</p>
+        <div className="overflow-hidden">
+          <div className="flex items-center space-x-1.5">
+            <h1 className="text-base font-extrabold tracking-wider bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 dark:from-white dark:via-purple-200 dark:to-indigo-300 bg-clip-text text-transparent">
+              KAAVALX
+            </h1>
+            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/30 uppercase tracking-wider">SOC</span>
+          </div>
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate">Support & Threat Intel</p>
         </div>
       </div>
 
@@ -59,9 +68,9 @@ export function Sidebar() {
               to={item.path}
               end={item.path === '/'}
               className={({ isActive }) =>
-                `flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                `flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
                   isActive
-                    ? 'bg-blue-600 text-white shadow-sm font-semibold'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/20 font-semibold'
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-slate-200'
                 }`
               }
@@ -77,7 +86,7 @@ export function Sidebar() {
       <div className="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 transition-colors">
         <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 mb-2 shadow-2xs">
           <div className="flex items-center space-x-2.5 overflow-hidden">
-            <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-600/30 border border-blue-200 dark:border-blue-500/40 flex items-center justify-center text-blue-700 dark:text-blue-400 font-bold text-xs flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-600/20 border border-purple-200 dark:border-purple-500/30 flex items-center justify-center text-purple-700 dark:text-purple-300 font-bold text-xs flex-shrink-0">
               {user?.email?.charAt(0).toUpperCase() || 'K'}
             </div>
             <div className="overflow-hidden">
@@ -97,10 +106,23 @@ export function Sidebar() {
           </button>
         </div>
 
-        {/* System Status Footnote */}
-        <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400 px-1 pt-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span className="text-[11px] font-medium truncate">Claude AI & Threat Engine</span>
+        {/* Developed by APEX Footnote */}
+        <div className="pt-2.5 mt-2 border-t border-slate-200/60 dark:border-slate-800/80 flex items-center justify-between px-1">
+          <div className="flex items-center space-x-2 overflow-hidden">
+            <div className="w-5 h-5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center p-0.5 shadow-2xs flex-shrink-0">
+              <img 
+                src="/apex-logo.png" 
+                alt="APEX Logo" 
+                className="w-full h-full object-contain" 
+              />
+            </div>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+              Developed by <strong className="text-slate-800 dark:text-slate-200 font-bold tracking-wide">APEX</strong>
+            </span>
+          </div>
+          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-sm bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-bold border border-purple-200 dark:border-purple-800/50">
+            v1.0
+          </span>
         </div>
       </div>
     </aside>

@@ -25,7 +25,7 @@ const DEFAULT_SUGGESTIONS = [
     category: 'SOC Threat Hunting',
     prompts: [
       'Analyze http://paypa1-security.example/login for credential harvesting',
-      'How does AegisGuard score lookalike domains and homoglyph attacks?',
+      'How does KAAVALX score lookalike domains and homoglyph attacks?',
       'What are recommended SOC actions for 2FA OTP exfiltration?'
     ]
   },
@@ -54,7 +54,7 @@ export function Assistant() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: "### 🛡️ Welcome to Aegis AI Studio (Powered by Google Gemini)\n\nI am your unified **Customer Support Intelligence & Cybersecurity Threat Copilot**.\n\n- **SOC Threat Analyst Mode:** Paste suspicious emails, links, or headers to detect lookalike domains, credential harvesting, or 2FA interceptions.\n- **Support Copilot Mode:** Draft empathetic, compliant replies to customer tickets with refund, delivery, or billing complaints.\n- **Ask Database Mode:** Query your live Supabase ticket and threat repository in natural language.\n\nSelect a suggestion below or type your query to begin.",
+      text: "### 🛡️ Welcome to KAAVALX AI Studio (Powered by Google Gemini)\n\nI am your unified **Customer Support Intelligence & Cybersecurity Threat Copilot**.\n\n- **SOC Threat Analyst Mode:** Paste suspicious emails, links, or headers to detect lookalike domains, credential harvesting, or 2FA interceptions.\n- **Support Copilot Mode:** Draft empathetic, compliant replies to customer tickets with refund, delivery, or billing complaints.\n- **Ask Database Mode:** Query your live Supabase ticket and threat repository in natural language.\n\nSelect a suggestion below or type your query to begin.",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       engine: 'Google Gemini 2.5 Flash'
     }
@@ -153,7 +153,7 @@ export function Assistant() {
       {
         id: 'welcome',
         role: 'assistant',
-        text: "### 🤖 Aegis Copilot Ready\n\nHow can I help you analyze customer tickets or cybersecurity threats today?",
+        text: "### 🤖 KAAVALX Copilot Ready\n\nHow can I help you analyze customer tickets or cybersecurity threats today?",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -198,20 +198,20 @@ export function Assistant() {
   };
 
   return (
-    <Layout title="Aegis AI Copilot (Gemini Studio)">
+    <Layout title="KAAVALX AI Copilot (Gemini Studio)">
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* Top Control Header Card */}
         <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-colors">
           <div className="flex items-center space-x-3">
-            <div className="p-3 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl text-white shadow-lg shadow-blue-500/20">
+            <div className="p-3 bg-gradient-to-tr from-purple-600 via-violet-600 to-indigo-600 rounded-xl text-white shadow-lg shadow-purple-500/25">
               <Bot className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">Aegis AI Intelligence Studio</h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-amber-500" />
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">KAAVALX AI Intelligence Studio</h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-amber-400" />
                   Google Gemini 2.5 Flash
                 </span>
               </div>
