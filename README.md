@@ -327,8 +327,8 @@ To deploy the frontend to Vercel:
    - **Framework Preset**: `Vite`
    - **Root Directory**: Leave blank (monorepo build scripts in root `package.json` handle `client/` compilation) or set to `client`.
    - **Environment Variables**:
-     - `VITE_SUPABASE_URL`: `your_supabase_project_url_here`
-     - `VITE_SUPABASE_KEY`: `your_supabase_anon_key_here`
+     - `VITE_SUPABASE_URL`: `supabase_project_url_here`
+     - `VITE_SUPABASE_KEY`: `supabase_anon_key_here`
 3. Click **Deploy**.
 
 ---
