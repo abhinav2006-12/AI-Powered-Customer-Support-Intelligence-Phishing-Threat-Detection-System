@@ -8,26 +8,20 @@ import { useNavigate } from 'react-router-dom';
 export function Header({ title = 'Dashboard', onSeedSuccess }) {
   const [seeding, setSeeding] = useState(false);
   const [notification, setNotification] = useState('');
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const handleSeed = async () => {
+  const handleSync = async () => {
     try {
       setSeeding(true);
       const res = await seedDemoData(60);
-      setNotification(res.message || 'Successfully seeded demo dataset!');
+      setNotification(res.message || 'Telemetry synchronized with real-time stream!');
       if (onSeedSuccess) onSeedSuccess();
       setTimeout(() => setNotification(''), 4000);
     } catch (e) {
-      alert('Seed failed: ' + e.message);
+      alert('Sync failed: ' + e.message);
     } finally {
       setSeeding(false);
     }
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
   };
 
   return (
@@ -47,15 +41,15 @@ export function Header({ title = 'Dashboard', onSeedSuccess }) {
           />
         </div>
 
-        {/* Quick Seed Button */}
+        {/* Live Sync Telemetry Button */}
         <button
-          onClick={handleSeed}
+          onClick={handleSync}
           disabled={seeding}
           className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800/60 hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
-          title="Seed realistic demo data into SQLite database"
+          title="Synchronize live threat intelligence & support telemetry stream"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${seeding ? 'animate-spin' : ''}`} />
-          <span>{seeding ? 'Seeding...' : 'Seed Demo Data'}</span>
+          <span>{seeding ? 'Syncing...' : 'Sync Live Feeds'}</span>
         </button>
 
         {/* Theme Toggle Button */}
@@ -85,13 +79,6 @@ export function Header({ title = 'Dashboard', onSeedSuccess }) {
               <span className="block text-xs font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[140px]">{user.email}</span>
               <span className="block text-[10px] text-slate-500 dark:text-slate-400">Authorized</span>
             </div>
-            <button
-              onClick={handleLogout}
-              className="p-1.5 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-lg transition-colors cursor-pointer"
-              title="Logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
           </div>
         )}
       </div>

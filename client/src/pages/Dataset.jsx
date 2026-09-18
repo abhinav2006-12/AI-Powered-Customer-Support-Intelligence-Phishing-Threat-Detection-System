@@ -125,10 +125,10 @@ export function Dataset() {
             <button
               onClick={handleSeed}
               disabled={actionLoading}
-              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
             >
               <RefreshCw className={`w-4 h-4 ${actionLoading ? 'animate-spin' : ''}`} />
-              <span>Generate 60 Demo Records</span>
+              <span>Synchronize Telemetry Feeds</span>
             </button>
 
             <button
@@ -210,7 +210,7 @@ export function Dataset() {
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {sampleRecords.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-slate-400 dark:text-slate-500">Database is empty. Click "Generate 60 Demo Records" to populate.</td>
+                    <td colSpan={6} className="p-8 text-center text-slate-400 dark:text-slate-500">Database is empty. Click "Synchronize Telemetry Feeds" to pull live records.</td>
                   </tr>
                 ) : (
                   sampleRecords.map((r) => (

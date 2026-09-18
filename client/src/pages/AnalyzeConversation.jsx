@@ -21,21 +21,21 @@ import {
 
 const PRESET_CASES = [
   {
-    title: 'Example 1: Payment Complaint',
+    title: 'Billing & Refund Dispute',
     name: 'Priya Sharma',
     email: 'priya.sharma@globaltech.in',
     channel: 'Email',
     text: 'My payment was deducted twice for the annual subscription (₹2,500). The transaction ID is TXN-99821 but my order wasn\'t confirmed. Please help me get my refund as soon as possible.'
   },
   {
-    title: 'Example 2: Phishing Scam',
-    name: 'PayPal Security Alert',
+    title: '2FA & Credential Harvesting Attack',
+    name: 'Security Alert System',
     email: 'support@paypa1-security.example',
     channel: 'Email',
     text: 'URGENT! Your account has been compromised due to unauthorized access. Click this link immediately http://paypa1-security.example/login to verify your identity. Enter your username, password and 6-digit OTP code to secure your account within 24 hours.'
   },
   {
-    title: 'Example 3: Suspicious URL',
+    title: 'Lookalike Impersonation Link',
     name: 'Bank Alert Desk',
     email: 'helpdesk.bank.security@gmail.com',
     channel: 'Contact Form',
@@ -78,9 +78,8 @@ export function AnalyzeConversation() {
         message,
         conversation_history: history,
         customer_name: customerName || 'Anonymous Customer',
-        customer_email: customerEmail,
-        channel,
-        save: true
+        customer_email: customerEmail || 'anonymous@domain.com',
+        channel: channel
       });
 
       setResult(res.analysis);
@@ -94,11 +93,11 @@ export function AnalyzeConversation() {
   return (
     <Layout title="Analyze Conversation">
       <div className="max-w-6xl mx-auto space-y-6">
-        {/* Preset Demo Buttons */}
-        <div className="bg-blue-50/70 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/60 p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors">
-          <div className="flex items-center space-x-2 text-blue-900 dark:text-blue-300">
-            <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
-            <span className="text-xs font-bold uppercase tracking-wider">Quick Hackathon Demo Templates:</span>
+        {/* Preset Incident Buttons */}
+        <div className="bg-purple-50/70 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800/60 p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors">
+          <div className="flex items-center space-x-2 text-purple-900 dark:text-purple-300">
+            <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+            <span className="text-xs font-bold uppercase tracking-wider">Live Incident Triage Presets:</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {PRESET_CASES.map((preset, idx) => (
@@ -106,7 +105,7 @@ export function AnalyzeConversation() {
                 key={idx}
                 type="button"
                 onClick={() => handlePreset(preset)}
-                className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-blue-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 text-blue-800 dark:text-blue-300 text-xs font-semibold rounded-lg shadow-2xs hover:bg-blue-50 dark:hover:bg-slate-700/60 transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-purple-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-lg shadow-2xs hover:bg-purple-50 dark:hover:bg-slate-700/60 transition-colors cursor-pointer"
               >
                 {preset.title}
               </button>

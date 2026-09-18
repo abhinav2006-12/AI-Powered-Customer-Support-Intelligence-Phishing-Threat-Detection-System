@@ -43,7 +43,7 @@ export function Sidebar() {
           <img 
             src="/logo.png" 
             alt="KAAVALX Logo" 
-            className="w-full h-full object-cover transform scale-150"
+            className="w-full h-full object-contain p-0.5"
           />
         </div>
         <div className="overflow-hidden">
@@ -108,19 +108,20 @@ export function Sidebar() {
 
         {/* Developed by APEX Footnote */}
         <div className="pt-2.5 mt-2 border-t border-slate-200/60 dark:border-slate-800/80 flex items-center justify-between px-1">
-          <div className="flex items-center space-x-2 overflow-hidden">
-            <div className="w-5 h-5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center p-0.5 shadow-2xs flex-shrink-0">
+          <div className="flex items-center space-x-2.5 overflow-hidden">
+            <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 dark:border-slate-700 flex items-center justify-center p-0.5 shadow-xs flex-shrink-0">
               <img 
                 src="/apex-logo.png" 
                 alt="APEX Logo" 
                 className="w-full h-full object-contain" 
               />
             </div>
-            <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-              Developed by <strong className="text-slate-800 dark:text-slate-200 font-bold tracking-wide">APEX</strong>
-            </span>
+            <div className="overflow-hidden">
+              <p className="text-[9px] uppercase font-mono text-slate-400 tracking-wider">Engineered by</p>
+              <p className="text-xs font-bold text-slate-900 dark:text-white tracking-wide">APEX</p>
+            </div>
           </div>
-          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded-sm bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-bold border border-purple-200 dark:border-purple-800/50">
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-bold border border-purple-200 dark:border-purple-800/50">
             v1.0
           </span>
         </div>

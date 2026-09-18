@@ -33,17 +33,6 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Initialize SQLite database
 initDB();
 
-// Auto-seed database if completely empty
-try {
-  const count = db.prepare('SELECT COUNT(*) as count FROM conversations').get().count;
-  if (count === 0) {
-    console.log('Database empty. Performing automatic initial seeding with 60 realistic records...');
-    seedDatabase(60);
-  }
-} catch (e) {
-  console.error('Initial auto-seed check error:', e.message);
-}
-
 // API Routes
 app.use('/api/conversations', conversationsRoutes);
 app.use('/api/analyze', analysisRoutes);
