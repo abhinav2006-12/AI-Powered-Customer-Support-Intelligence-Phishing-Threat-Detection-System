@@ -25,7 +25,7 @@ export function Sidebar() {
   };
 
   const navItems = [
-    { label: 'Dashboard', path: '/', icon: LayoutDashboard },
+    { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { label: 'KAAVALX AI Copilot', path: '/assistant', icon: Bot },
     { label: 'Analyze Conversation', path: '/analyze', icon: Sparkles },
     { label: 'Public Scam Checker', path: '/verify', icon: ShieldCheck },
@@ -67,7 +67,7 @@ export function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
-              end={item.path === '/'}
+              end={item.path === '/dashboard'}
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
                   isActive

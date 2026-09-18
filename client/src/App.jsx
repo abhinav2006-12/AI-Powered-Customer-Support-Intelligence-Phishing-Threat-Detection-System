@@ -22,16 +22,17 @@ export function App() {
       <AuthProvider>
         <BrowserRouter>
         <Routes>
-          {/* Public Routes (Accessible without login) */}
-          <Route path="/login" element={<Login />} />
+          {/* Public Root & Verification Routes */}
+          <Route path="/" element={<Navigate to="/verify" replace />} />
           <Route path="/verify" element={<PublicScamChecker />} />
           <Route path="/check" element={<PublicScamChecker />} />
           <Route path="/scam-checker" element={<PublicScamChecker />} />
           <Route path="/check-scam" element={<PublicScamChecker />} />
+          <Route path="/login" element={<Login />} />
 
           {/* Protected Application Routes */}
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
