@@ -1,4 +1,3 @@
-import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
@@ -19,11 +18,34 @@ if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
-const db = new Database(dbPath);
+let dbInstance = null;
 
-// Enable Foreign Keys & Write-Ahead Logging for better concurrency
-db.pragma('foreign_keys = ON');
-db.pragma('journal_mode = WAL');
+// Prefer built-in node:sqlite (native in Node 22+) for 0-dependency robustness
+try {
+  const { DatabaseSync } = await import('node:sqlite');
+  dbInstance = new DatabaseSync(dbPath);
+  dbInstance.pragma = function(clause) {
+    try {
+      dbInstance.exec(`PRAGMA ${clause};`);
+    } catch (e) {}
+  };
+  console.log('⚡ Connected to SQLite using built-in node:sqlite engine');
+} catch (nodeSqliteErr) {
+  try {
+    const BetterSqlite3 = (await import('better-sqlite3')).default;
+    dbInstance = new BetterSqlite3(dbPath);
+  } catch (err) {
+    console.warn('SQLite engine initialization fallback warning:', err.message);
+  }
+}
+
+const db = dbInstance;
+
+// Enable Foreign Keys & Write-Ahead Logging for concurrency
+if (db && typeof db.pragma === 'function') {
+  db.pragma('foreign_keys = ON');
+  db.pragma('journal_mode = WAL');
+}
 
 // Initialize SQL Tables
 export function initDB() {
