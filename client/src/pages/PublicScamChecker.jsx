@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeToggle } from '../components/common/ThemeToggle';
+import { PublicScamChatAdvisor } from '../components/chat/PublicScamChatAdvisor';
 import { analyzeSecurity } from '../services/supabaseService';
 import { analyzeConversation } from '../services/api';
 import { 
@@ -36,7 +37,8 @@ import {
   Smartphone,
   CheckCircle,
   Eye,
-  Info
+  Info,
+  Bot
 } from 'lucide-react';
 
 const PRESET_SCAMS = [
@@ -133,9 +135,11 @@ export function PublicScamChecker() {
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
   const [expandedFaq, setExpandedFaq] = useState(null);
+  const [isFloatingChatOpen, setIsFloatingChatOpen] = useState(false);
 
   const textareaRef = useRef(null);
   const resultRef = useRef(null);
+  const chatRef = useRef(null);
 
   const handlePasteFromClipboard = async () => {
     try {
@@ -412,11 +416,25 @@ export function PublicScamChecker() {
           </Link>
 
           {/* Right Controls */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2.5">
+            <button
+              onClick={() => {
+                if (chatRef.current) {
+                  chatRef.current.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  setIsFloatingChatOpen(true);
+                }
+              }}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-xl bg-purple-100 dark:bg-purple-900/40 hover:bg-purple-200 dark:hover:bg-purple-900/60 text-purple-800 dark:text-purple-200 border border-purple-200 dark:border-purple-800/60 transition-all cursor-pointer shadow-2xs"
+              title="Chat with AI Scam Advisor to clear fraud doubts"
+            >
+              <Bot className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+              <span>Ask AI Advisor</span>
+            </button>
             <ThemeToggle />
             <Link
               to="/login"
-              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold rounded-xl bg-purple-50 dark:bg-purple-950/50 hover:bg-purple-100 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 transition-all shadow-2xs hover:scale-[1.02] active:scale-[0.98]"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 text-xs font-bold rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all shadow-2xs hover:scale-[1.02] active:scale-[0.98]"
               title="Security Operations Center & Analyst Login"
             >
               <span>SOC Portal</span>
@@ -815,6 +833,11 @@ export function PublicScamChecker() {
           </div>
         </div>
 
+        {/* Embedded AI Scam Advisor Chat Section */}
+        <div ref={chatRef} id="advisor-chat-section" className="scroll-mt-20">
+          <PublicScamChatAdvisor isFloating={false} />
+        </div>
+
         {/* Interactive FAQ Accordion */}
         <div className="bg-white dark:bg-[#0E162B] rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-md space-y-4">
           <div className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
@@ -847,6 +870,28 @@ export function PublicScamChecker() {
         </div>
 
       </main>
+
+      {/* Floating Chat Advisor Dialog */}
+      <PublicScamChatAdvisor 
+        isFloating={true} 
+        isOpen={isFloatingChatOpen} 
+        onClose={() => setIsFloatingChatOpen(false)} 
+      />
+
+      {/* Floating Chat Trigger Button */}
+      {!isFloatingChatOpen && (
+        <button
+          onClick={() => setIsFloatingChatOpen(true)}
+          className="fixed bottom-5 right-5 z-40 p-3.5 sm:px-4 sm:py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 text-white shadow-xl shadow-purple-600/30 hover:scale-105 active:scale-95 transition-all flex items-center space-x-2.5 cursor-pointer border border-white/20 group"
+          title="Open AI Scam & Safety Advisor"
+        >
+          <div className="relative">
+            <Bot className="w-5 h-5 text-white group-hover:rotate-12 transition-transform" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-purple-700 animate-pulse"></span>
+          </div>
+          <span className="text-xs font-bold hidden sm:inline tracking-tight">Ask Scam Advisor</span>
+        </button>
+      )}
 
       {/* Footer Attribution */}
       <footer className="relative z-10 mt-12 border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-[#080D1A]/50 backdrop-blur-md py-6 text-center text-xs text-slate-500 dark:text-slate-400">
