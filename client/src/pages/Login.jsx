@@ -58,18 +58,19 @@ export function Login() {
       </div>
 
       {/* Ambient Background Glows */}
-      <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-purple-600/15 dark:bg-purple-600/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-indigo-600/15 dark:bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-purple-600/25 dark:bg-purple-600/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-indigo-600/20 dark:bg-indigo-600/25 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 right-1/3 w-[400px] h-[400px] bg-cyan-500/15 dark:bg-cyan-500/20 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Main Container */}
-      <div className="w-full max-w-4xl relative z-10 bg-white dark:bg-[#0E152C] rounded-3xl shadow-2xl dark:shadow-black/70 border border-slate-200 dark:border-slate-800/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12 transition-colors">
+      <div className="w-full max-w-4xl relative z-10 glass-panel rounded-3xl shadow-2xl dark:shadow-purple-950/30 border border-white/60 dark:border-white/10 overflow-hidden grid grid-cols-1 lg:grid-cols-12 transition-colors">
         
         {/* ================= LEFT COLUMN: Brand Banner ================= */}
-        <div className="lg:col-span-5 bg-gradient-to-br from-slate-900 via-[#101938] to-[#1a113d] text-white p-8 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800/80">
+        <div className="lg:col-span-5 bg-gradient-to-br from-slate-900/90 via-[#101938]/90 to-[#1a113d]/90 backdrop-blur-xl text-white p-8 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-white/10">
           
           <div className="relative z-10">
             {/* KAAVALX Brand Banner */}
-            <div className="w-full rounded-2xl overflow-hidden border border-purple-500/40 bg-black shadow-xl mb-6">
+            <div className="w-full rounded-2xl overflow-hidden border border-purple-500/40 bg-black/60 shadow-xl mb-6 backdrop-blur-sm">
               <img 
                 src="/logo.png" 
                 alt="KAAVALX Logo" 
@@ -84,7 +85,7 @@ export function Login() {
 
           {/* APEX Attribution */}
           <div className="relative z-10 pt-6 mt-6 border-t border-white/10 flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1 shadow-md flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center p-1 shadow-md flex-shrink-0">
               <img src="/apex-logo.png" alt="APEX Logo" className="w-full h-full object-contain" />
             </div>
             <div>
@@ -96,7 +97,7 @@ export function Login() {
         </div>
 
         {/* ================= RIGHT COLUMN: Sign In Form ================= */}
-        <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center bg-white dark:bg-[#0E152C]">
+        <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl">
           
           <div className="max-w-sm w-full mx-auto">
             

@@ -363,7 +363,7 @@ export function PublicScamChecker() {
       </div>
 
       {/* Top Header Navigation */}
-      <header className="sticky top-0 z-30 bg-white/90 dark:bg-[#0E152C]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 shadow-2xs transition-colors">
+      <header className="sticky top-0 z-30 glass-header shadow-2xs transition-colors">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
           
           {/* Brand Logo & Title */}
@@ -406,14 +406,6 @@ export function PublicScamChecker() {
               <span>Ask Advisor</span>
             </button>
             <ThemeToggle />
-            <Link
-              to="/login"
-              className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all shadow-2xs"
-              title="Security Operations Center & Analyst Login"
-            >
-              <span>SOC Portal</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
         </div>
       </header>
@@ -453,7 +445,7 @@ export function PublicScamChecker() {
 
         {/* Segmented Top Mode Navigation Switcher */}
         <div className="flex items-center justify-center">
-          <div className="inline-flex p-1 rounded-xl bg-white dark:bg-[#0E152C] border border-slate-200 dark:border-slate-800 shadow-xs space-x-1">
+          <div className="inline-flex p-1 rounded-2xl glass-panel space-x-1">
             <button
               type="button"
               onClick={() => setActiveTab('scanner')}
@@ -500,7 +492,7 @@ export function PublicScamChecker() {
           <div className="space-y-5 animate-fade-in">
             
             {/* Input Container */}
-            <div className="bg-white dark:bg-[#0E152C] rounded-2xl p-4 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-lg dark:shadow-black/30 space-y-4 transition-colors">
+            <div className="glass-panel rounded-3xl p-4 sm:p-6 space-y-4 transition-all">
               
               {/* Separate Input Mode Tabs (Message / URL / Email / WhatsApp) */}
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800/80 pb-3">
@@ -820,7 +812,7 @@ export function PublicScamChecker() {
                   </div>
 
                   {/* ================= "WHY WE FLAGGED THIS" AI FORENSIC BREAKDOWN ================= */}
-                  <div className="bg-white dark:bg-[#0E152C] rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                  <div className="glass-panel rounded-3xl p-5 sm:p-6 space-y-4 transition-all">
                     <div className="flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-2.5">
                       <Zap className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                       <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">
@@ -921,7 +913,7 @@ export function PublicScamChecker() {
                   )}
 
                   {/* Recommended Action Card */}
-                  <div className="bg-white dark:bg-[#0E152C] p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+                  <div className="glass-panel p-5 rounded-3xl space-y-2 transition-all">
                     <h4 className="text-xs font-bold text-purple-700 dark:text-purple-400 uppercase tracking-wider flex items-center space-x-1.5">
                       <Shield className="w-4 h-4" />
                       <span>Recommended Safety Action</span>
@@ -1085,10 +1077,6 @@ export function PublicScamChecker() {
 
           <div className="flex items-center space-x-3 text-[11px]">
             <span className="font-mono text-slate-400">Engineered by APEX</span>
-            <span>•</span>
-            <Link to="/login" className="text-purple-600 dark:text-purple-400 font-semibold hover:underline">
-              Analyst SOC Portal
-            </Link>
           </div>
         </div>
       </footer>

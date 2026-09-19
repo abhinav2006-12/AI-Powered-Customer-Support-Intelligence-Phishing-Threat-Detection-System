@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { getConversations, deleteConversation } from '../services/api';
@@ -12,7 +12,8 @@ import {
   ShieldAlert, 
   ChevronLeft, 
   ChevronRight,
-  RefreshCw
+  RefreshCw,
+  X
 } from 'lucide-react';
 
 export function Conversations() {
@@ -29,12 +30,14 @@ export function Conversations() {
   const [resolution, setResolution] = useState('');
 
   const navigate = useNavigate();
+  const searchTimeoutRef = useRef(null);
 
-  const fetchConversations = async (pageNumber = 1) => {
+  const fetchConversations = async (pageNumber = 1, customSearch = null) => {
     try {
       setLoading(true);
+      const activeSearch = customSearch !== null ? customSearch : search;
       const res = await getConversations({
-        search,
+        search: activeSearch,
         category,
         priority,
         sentiment,
@@ -44,7 +47,7 @@ export function Conversations() {
         limit: 15
       });
 
-      setItems(res.items || []);
+      setItems(res.items || res.conversations || []);
       setPagination(res.pagination || { page: 1, limit: 15, total: 0, totalPages: 1 });
     } catch (e) {
       console.error('Failed to load conversations:', e);
@@ -57,9 +60,24 @@ export function Conversations() {
     fetchConversations(1);
   }, [category, priority, sentiment, security, resolution]);
 
+  const handleSearchChange = (val) => {
+    setSearch(val);
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    searchTimeoutRef.current = setTimeout(() => {
+      fetchConversations(1, val);
+    }, 300);
+  };
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
     fetchConversations(1);
+  };
+
+  const handleClearSearch = () => {
+    setSearch('');
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    fetchConversations(1, '');
   };
 
   const handleDelete = async (id, e) => {
@@ -76,25 +94,34 @@ export function Conversations() {
 
   return (
     <Layout title="Conversations">
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Filters Header Bar */}
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
+        <div className="glass-panel p-4 rounded-2xl space-y-3 transition-all">
           <form onSubmit={handleSearchSubmit} className="flex flex-wrap items-center gap-3">
             <div className="relative flex-1 min-w-[200px]">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search customer name, email, issue..."
-                className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden transition-colors"
+                onChange={(e) => handleSearchChange(e.target.value)}
+                placeholder="Search customer name, email, issue, keywords, ID..."
+                className="w-full pl-9 pr-8 py-1.5 glass-input rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-hidden transition-all"
               />
+              {search && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-0.5"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
+              className="px-3 py-1.5 glass-input rounded-xl text-xs text-slate-700 dark:text-slate-200 focus:outline-hidden transition-all"
             >
               <option value="">All Categories</option>
               <option value="Billing / Payment">Billing / Payment</option>
@@ -111,7 +138,7 @@ export function Conversations() {
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
+              className="px-3 py-1.5 glass-input rounded-xl text-xs text-slate-700 dark:text-slate-200 focus:outline-hidden transition-all"
             >
               <option value="">All Priorities</option>
               <option value="Critical">Critical</option>
@@ -123,7 +150,7 @@ export function Conversations() {
             <select
               value={sentiment}
               onChange={(e) => setSentiment(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
+              className="px-3 py-1.5 glass-input rounded-xl text-xs text-slate-700 dark:text-slate-200 focus:outline-hidden transition-all"
             >
               <option value="">All Sentiments</option>
               <option value="Negative">Negative</option>
@@ -134,7 +161,7 @@ export function Conversations() {
             <select
               value={security}
               onChange={(e) => setSecurity(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
+              className="px-3 py-1.5 glass-input rounded-xl text-xs text-slate-700 dark:text-slate-200 focus:outline-hidden transition-all"
             >
               <option value="">All Security States</option>
               <option value="Threat">Security Threat Detected</option>
@@ -146,7 +173,7 @@ export function Conversations() {
             <select
               value={resolution}
               onChange={(e) => setResolution(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:outline-hidden transition-colors"
+              className="px-3 py-1.5 glass-input rounded-xl text-xs text-slate-700 dark:text-slate-200 focus:outline-hidden transition-all"
             >
               <option value="">All Resolutions</option>
               <option value="Unresolved">Unresolved</option>
@@ -156,7 +183,7 @@ export function Conversations() {
 
             <button
               type="submit"
-              className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+              className="px-4 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs rounded-xl shadow-xs shadow-purple-500/25 transition-all cursor-pointer"
             >
               Filter
             </button>
@@ -164,7 +191,7 @@ export function Conversations() {
         </div>
 
         {/* Conversations Table */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
+        <div className="glass-panel rounded-2xl overflow-hidden transition-all">
           {loading ? (
             <LoadingSpinner message="Fetching conversations from SQLite database..." />
           ) : items.length === 0 ? (

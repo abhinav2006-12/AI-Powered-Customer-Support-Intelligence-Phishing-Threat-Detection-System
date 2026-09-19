@@ -57,9 +57,9 @@ export function Settings() {
     <Layout title="Settings & System Status">
       <div className="max-w-4xl mx-auto space-y-6">
         
-        {/* Appearance & Theme Settings */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-          <div className="flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+        {/* Theme Settings Card */}
+        <div className="glass-panel p-6 rounded-2xl space-y-4 transition-all">
+          <div className="flex items-center space-x-2 border-b border-slate-100 dark:border-white/5 pb-3">
             <Sun className="w-5 h-5 text-amber-500" />
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Appearance & Display Mode</h3>
           </div>
@@ -120,8 +120,8 @@ export function Settings() {
         </div>
 
         {/* System Health & Cloud Database Card */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+        <div className="glass-panel p-6 rounded-2xl space-y-4 transition-all">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-3">
             <div className="flex items-center space-x-2">
               <Server className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <h3 className="text-sm font-bold text-slate-900 dark:text-white">System Health & Live Connection Telemetry</h3>
@@ -209,8 +209,8 @@ export function Settings() {
         </div>
 
         {/* Security Scoring Engine Parameters */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-          <div className="flex items-center space-x-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+        <div className="glass-panel p-6 rounded-2xl space-y-4 transition-all">
+          <div className="flex items-center space-x-2 border-b border-slate-100 dark:border-white/5 pb-3">
             <ShieldCheck className="w-5 h-5 text-rose-600 dark:text-rose-400" />
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Deterministic Threat Scoring Parameters</h3>
           </div>

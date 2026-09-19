@@ -8,10 +8,8 @@ import {
   BarChart3, 
   Database, 
   Settings,
-  ShieldCheck,
   LogOut,
-  UserCheck,
-  Bot
+  UserCheck
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -26,9 +24,7 @@ export function Sidebar() {
 
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { label: 'KAAVALX AI Copilot', path: '/assistant', icon: Bot },
     { label: 'Analyze Conversation', path: '/analyze', icon: Sparkles },
-    { label: 'Public Scam Checker', path: '/verify', icon: ShieldCheck },
     { label: 'Conversations', path: '/conversations', icon: MessageSquare },
     { label: 'Threat Intelligence', path: '/threats', icon: ShieldAlert },
     { label: 'Analytics', path: '/analytics', icon: BarChart3 },
@@ -37,9 +33,9 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-white dark:bg-[#0F172A] text-slate-600 dark:text-slate-400 flex flex-col h-screen sticky top-0 border-r border-slate-200 dark:border-slate-800 z-30 transition-colors duration-200">
+    <aside className="w-64 glass-sidebar text-slate-600 dark:text-slate-400 flex flex-col h-screen sticky top-0 z-30 transition-colors duration-200">
       {/* Brand Header */}
-      <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center space-x-3">
+      <div className="p-4 border-b border-slate-200/60 dark:border-white/5 flex items-center space-x-3">
         <div className="w-10 h-10 rounded-xl bg-black border border-purple-500/30 overflow-hidden flex items-center justify-center shadow-md shadow-purple-500/25 flex-shrink-0">
           <img 
             src="/logo.png" 
@@ -84,8 +80,8 @@ export function Sidebar() {
       </nav>
 
       {/* User Info & Logout */}
-      <div className="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 transition-colors">
-        <div className="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 mb-2 shadow-2xs">
+      <div className="p-3 border-t border-slate-200/60 dark:border-white/5 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md transition-colors">
+        <div className="flex items-center justify-between p-2 rounded-xl bg-white/70 dark:bg-slate-800/40 border border-slate-200/70 dark:border-white/5 mb-2 shadow-2xs">
           <div className="flex items-center space-x-2.5 overflow-hidden">
             <div className="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-600/20 border border-purple-200 dark:border-purple-500/30 flex items-center justify-center text-purple-700 dark:text-purple-300 font-bold text-xs flex-shrink-0">
               {user?.email?.charAt(0).toUpperCase() || 'K'}
@@ -93,7 +89,7 @@ export function Sidebar() {
             <div className="overflow-hidden">
               <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">{user?.email || 'kavalx@kavalx.in'}</p>
               <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
                 SOC Analyst
               </p>
             </div>
@@ -108,7 +104,7 @@ export function Sidebar() {
         </div>
 
         {/* Developed by APEX Footnote */}
-        <div className="pt-2.5 mt-2 border-t border-slate-200/60 dark:border-slate-800/80 flex items-center justify-between px-1">
+        <div className="pt-2.5 mt-2 border-t border-slate-200/60 dark:border-white/5 flex items-center justify-between px-1">
           <div className="flex items-center space-x-2.5 overflow-hidden">
             <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 dark:border-slate-700 flex items-center justify-center p-0.5 shadow-xs flex-shrink-0">
               <img 

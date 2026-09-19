@@ -92,15 +92,34 @@ export async function analyzeConversation(data) {
     });
   } catch (err) {
     console.log('Analyzing conversation locally & storing to Supabase...');
-    const analysis = supabaseService.analyzeSentimentAndCategory(data.message || '');
-    const threat = supabaseService.analyzeSecurity(data.message || '', data.customer_email || '');
-    return {
-      success: true,
-      analysis,
-      threat,
-      urls: [],
-      emails: []
-    };
+    try {
+      const created = await supabaseService.createConversationInSupabase(data);
+      return {
+        success: true,
+        conversation_id: created.id,
+        analysis: {
+          ...created.analysis,
+          security: created.threat
+        },
+        threat: created.threat,
+        urls: [],
+        emails: []
+      };
+    } catch (dbErr) {
+      console.warn('Fallback Supabase insert failed:', dbErr);
+      const analysis = supabaseService.analyzeSentimentAndCategory(data.message || '');
+      const threat = supabaseService.analyzeSecurity(data.message || '', data.customer_email || '');
+      return {
+        success: true,
+        analysis: {
+          ...analysis,
+          security: threat
+        },
+        threat,
+        urls: [],
+        emails: []
+      };
+    }
   }
 }
 

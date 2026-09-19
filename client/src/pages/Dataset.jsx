@@ -106,8 +106,8 @@ export function Dataset() {
   return (
     <Layout title="Dataset Management">
       <div className="space-y-6">
-        {/* Action Header Card */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-wrap items-center justify-between gap-4 transition-colors">
+        {/* Header Action Card */}
+        <div className="glass-panel p-5 rounded-2xl flex flex-wrap items-center justify-between gap-4 transition-all">
           <div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">SQLite Intelligence Repository</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">Manage, import, and seed training & evaluation datasets</p>
@@ -190,8 +190,8 @@ export function Dataset() {
         </div>
 
         {/* Database Records Table Preview */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
-          <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="glass-panel rounded-2xl overflow-hidden transition-all">
+          <div className="p-4 border-b border-slate-200/60 dark:border-white/5">
             <h4 className="text-sm font-bold text-slate-900 dark:text-white">Recent Stored Database Records</h4>
           </div>
 
@@ -231,9 +231,9 @@ export function Dataset() {
 
         {/* Modal for Importing JSON Dataset */}
         {showImportModal && (
-          <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-xl border border-slate-200 dark:border-slate-800 shadow-2xl p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+          <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="glass-panel w-full max-w-xl rounded-3xl p-6 space-y-4 shadow-2xl border border-white/60 dark:border-white/10">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-3">
                 <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
                   <FileJson className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   <span>Import JSON Conversation Dataset</span>

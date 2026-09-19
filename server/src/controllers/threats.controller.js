@@ -22,9 +22,9 @@ export function getThreats(req, res) {
     }
 
     if (search.trim()) {
-      whereConditions.push('(c.customer_name LIKE ? OR c.customer_email LIKE ? OR t.threat_type LIKE ? OR t.reason LIKE ?)');
+      whereConditions.push('(c.customer_name LIKE ? OR c.customer_email LIKE ? OR c.external_id LIKE ? OR c.message LIKE ? OR t.threat_type LIKE ? OR t.reason LIKE ? OR t.social_engineering_techniques LIKE ?)');
       const term = `%${search.trim()}%`;
-      params.push(term, term, term, term);
+      params.push(term, term, term, term, term, term, term);
     }
 
     const whereClause = `WHERE ${whereConditions.join(' AND ')}`;

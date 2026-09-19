@@ -118,7 +118,7 @@ export function Dashboard() {
         {/* Charts Row 1: Trends & Sentiment */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Area Chart: 14-Day Activity & Threat Trends */}
-          <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <div className="lg:col-span-2 glass-panel p-5 rounded-2xl transition-all">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">Conversation & Security Threat Trends</h3>
@@ -153,7 +153,7 @@ export function Dashboard() {
           </div>
 
           {/* Sentiment Distribution Pie Chart */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <div className="glass-panel p-5 rounded-2xl transition-all">
             <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">Sentiment Breakdown</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Customer emotional tone distribution</p>
             <div className="h-64 flex items-center justify-center">
@@ -191,7 +191,7 @@ export function Dashboard() {
         {/* Charts Row 2: Categories & Threat Types */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Complaint Category Distribution */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <div className="glass-panel p-5 rounded-2xl transition-all">
             <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">Complaint Category Breakdown</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Volume of issues by classified domain</p>
             <div className="h-60">
@@ -208,7 +208,7 @@ export function Dashboard() {
           </div>
 
           {/* Threat Type Breakdown */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <div className="glass-panel p-5 rounded-2xl transition-all">
             <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1">Detected Cybersecurity Threat Types</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Phishing, OTP scams, & impersonation cases</p>
             <div className="h-60">
@@ -228,8 +228,8 @@ export function Dashboard() {
         {/* Recent Activity Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Threats Table */}
-          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="glass-panel rounded-2xl overflow-hidden transition-all">
+            <div className="p-4 border-b border-slate-200/60 dark:border-white/5 flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <ShieldAlert className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Recent High-Risk Threats</h3>
@@ -270,8 +270,8 @@ export function Dashboard() {
           </div>
 
           {/* Recent Unresolved Complaints */}
-          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="glass-panel rounded-2xl overflow-hidden transition-all">
+            <div className="p-4 border-b border-slate-200/60 dark:border-white/5 flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Recent Unresolved Support Tickets</h3>

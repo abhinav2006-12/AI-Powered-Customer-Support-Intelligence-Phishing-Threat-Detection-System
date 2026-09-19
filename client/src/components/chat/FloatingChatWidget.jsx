@@ -197,12 +197,12 @@ export function FloatingChatWidget() {
 
       {/* Floating Chat Drawer Window */}
       {isOpen && (
-        <div className="fixed bottom-5 right-5 z-50 w-[92vw] sm:w-[420px] h-[580px] max-h-[85vh] bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl shadow-black/40 flex flex-col overflow-hidden animate-fade-in transition-colors duration-200 ring-1 ring-black/5 dark:ring-white/10">
+        <div className="fixed bottom-5 right-5 z-50 w-[92vw] sm:w-[420px] h-[580px] max-h-[85vh] glass-panel rounded-3xl shadow-2xl dark:shadow-purple-950/40 border border-white/60 dark:border-white/10 flex flex-col overflow-hidden animate-fade-in transition-all duration-200">
           
           {/* Header Bar */}
-          <div className="p-3.5 bg-gradient-to-r from-slate-900 via-[#131C31] to-slate-900 text-white flex items-center justify-between border-b border-slate-800 flex-shrink-0">
+          <div className="p-3.5 bg-gradient-to-r from-slate-900/90 via-[#131C31]/90 to-slate-900/90 backdrop-blur-md text-white flex items-center justify-between border-b border-white/10 flex-shrink-0">
             <div className="flex items-center space-x-2.5">
-              <div className="p-1.5 bg-purple-600 rounded-lg text-white shadow-xs">
+              <div className="p-1.5 bg-purple-600 rounded-xl text-white shadow-xs">
                 <Bot className="w-4 h-4" />
               </div>
               <div>
@@ -221,7 +221,7 @@ export function FloatingChatWidget() {
                   setIsOpen(false);
                   navigate('/assistant');
                 }}
-                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded-lg transition-colors cursor-pointer"
                 title="Open Fullscreen Studio"
               >
                 <Maximize2 className="w-3.5 h-3.5" />
@@ -229,7 +229,7 @@ export function FloatingChatWidget() {
               <button
                 type="button"
                 onClick={handleClear}
-                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded-lg transition-colors cursor-pointer"
                 title="Clear Chat"
               >
                 <Trash2 className="w-3.5 h-3.5" />
@@ -237,7 +237,7 @@ export function FloatingChatWidget() {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 rounded-lg transition-colors cursor-pointer"
                 title="Close"
               >
                 <X className="w-4 h-4" />
@@ -246,7 +246,7 @@ export function FloatingChatWidget() {
           </div>
 
           {/* Mode Selector Tabs */}
-          <div className="bg-slate-100 dark:bg-slate-900/90 p-1.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-1 flex-shrink-0">
+          <div className="bg-white/50 dark:bg-slate-900/60 backdrop-blur-md p-1.5 border-b border-slate-200/60 dark:border-white/5 flex items-center justify-between gap-1 flex-shrink-0">
             <button
               type="button"
               onClick={() => setMode('soc')}

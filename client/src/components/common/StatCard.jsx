@@ -10,14 +10,14 @@ export function StatCard({ title, value, subtext, icon: Icon, color = 'blue' }) 
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-start justify-between transition-colors duration-200">
+    <div className="glass-card p-5 rounded-2xl flex items-start justify-between">
       <div>
-        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">{title}</p>
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-1.5">{value}</h3>
+        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{title}</p>
+        <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white mt-1.5">{value}</h3>
         {subtext && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{subtext}</p>}
       </div>
       {Icon && (
-        <div className={`p-2.5 rounded-lg border ${colorStyles[color] || colorStyles.blue}`}>
+        <div className={`p-2.5 rounded-xl border ${colorStyles[color] || colorStyles.blue}`}>
           <Icon className="w-5 h-5" />
         </div>
       )}

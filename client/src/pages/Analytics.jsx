@@ -64,7 +64,7 @@ export function Analytics() {
     <Layout title="Analytics & Business Intelligence">
       <div className="space-y-6">
         {/* Date Filter Header */}
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between transition-colors">
+        <div className="glass-panel p-4 rounded-2xl flex items-center justify-between transition-all">
           <div className="flex items-center space-x-2">
             <BarChart3 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             <h3 className="text-sm font-bold text-slate-900 dark:text-white">Support Operations & Cybersecurity Risk Intelligence</h3>
@@ -76,7 +76,7 @@ export function Analytics() {
             <select
               value={range}
               onChange={(e) => setRange(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 cursor-pointer transition-colors"
+              className="px-3 py-1.5 glass-input rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-hidden cursor-pointer transition-all"
             >
               <option value="today">Today</option>
               <option value="7d">Last 7 Days</option>
@@ -89,7 +89,7 @@ export function Analytics() {
         {/* Grid 1: Categories & Top Issues */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Most Common Complaint Categories Chart */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
+          <div className="glass-panel p-5 rounded-2xl space-y-3 transition-all">
             <h4 className="text-sm font-bold text-slate-900 dark:text-white">Most Common Support Complaint Categories</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">Distribution across customer support requests</p>
             <div className="h-64">
@@ -106,7 +106,7 @@ export function Analytics() {
           </div>
 
           {/* Top Frequent Issues Table */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
+          <div className="glass-panel p-5 rounded-2xl space-y-3 transition-all">
             <h4 className="text-sm font-bold text-slate-900 dark:text-white">Top Root Cause Issues</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400">Most frequently occurring customer pain points</p>
             <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-64 overflow-y-auto">
@@ -129,7 +129,7 @@ export function Analytics() {
         {/* Grid 2: Suspicious Domains & Social Engineering Techniques */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Top Suspicious Domains */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
+          <div className="glass-panel p-5 rounded-2xl space-y-3 transition-all">
             <div className="flex items-center space-x-2">
               <Globe className="w-4 h-4 text-rose-600 dark:text-rose-400" />
               <h4 className="text-sm font-bold text-slate-900 dark:text-white">Top Suspicious / Lookalike Domains</h4>
@@ -155,7 +155,7 @@ export function Analytics() {
           </div>
 
           {/* Top Social Engineering Techniques */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
+          <div className="glass-panel p-5 rounded-2xl space-y-3 transition-all">
             <div className="flex items-center space-x-2">
               <Users className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               <h4 className="text-sm font-bold text-slate-900 dark:text-white">Prevalent Social Engineering Tactics</h4>

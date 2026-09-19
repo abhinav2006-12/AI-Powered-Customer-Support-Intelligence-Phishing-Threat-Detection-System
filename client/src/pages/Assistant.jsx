@@ -202,7 +202,7 @@ export function Assistant() {
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* Top Control Header Card */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-colors">
+        <div className="glass-panel p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all">
           <div className="flex items-center space-x-3">
             <div className="p-3 bg-gradient-to-tr from-purple-600 via-violet-600 to-indigo-600 rounded-xl text-white shadow-lg shadow-purple-500/25">
               <Bot className="w-6 h-6" />
@@ -223,7 +223,7 @@ export function Assistant() {
 
           <div className="flex flex-wrap items-center gap-3">
             {/* Context Ingestion Toggle */}
-            <label className="flex items-center space-x-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700">
+            <label className="flex items-center space-x-2 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer glass-input px-3 py-2 rounded-xl">
               <input
                 type="checkbox"
                 checked={includeContext}
@@ -238,7 +238,7 @@ export function Assistant() {
             <button
               type="button"
               onClick={handleClear}
-              className="px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
+              className="px-3 py-2 glass-input hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-all cursor-pointer"
               title="Clear Conversation"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -252,13 +252,13 @@ export function Assistant() {
           <button
             type="button"
             onClick={() => setMode('soc')}
-            className={`p-3.5 rounded-xl border text-left flex items-center space-x-3 transition-all cursor-pointer ${
+            className={`p-3.5 rounded-2xl border text-left flex items-center space-x-3 transition-all cursor-pointer ${
               mode === 'soc'
-                ? 'bg-rose-50/80 dark:bg-rose-950/30 border-rose-500 ring-2 ring-rose-500/20 shadow-xs'
-                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                ? 'bg-rose-50/80 dark:bg-rose-950/40 border-rose-500 ring-2 ring-rose-500/20 shadow-md backdrop-blur-md'
+                : 'glass-card'
             }`}
           >
-            <div className={`p-2.5 rounded-lg ${mode === 'soc' ? 'bg-rose-600 text-white' : 'bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400'}`}>
+            <div className={`p-2.5 rounded-xl ${mode === 'soc' ? 'bg-rose-600 text-white' : 'bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400'}`}>
               <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
@@ -270,31 +270,31 @@ export function Assistant() {
           <button
             type="button"
             onClick={() => setMode('support')}
-            className={`p-3.5 rounded-xl border text-left flex items-center space-x-3 transition-all cursor-pointer ${
+            className={`p-3.5 rounded-2xl border text-left flex items-center space-x-3 transition-all cursor-pointer ${
               mode === 'support'
-                ? 'bg-blue-50/80 dark:bg-blue-950/30 border-blue-500 ring-2 ring-blue-500/20 shadow-xs'
-                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                ? 'bg-blue-50/80 dark:bg-blue-950/40 border-blue-500 ring-2 ring-blue-500/20 shadow-md backdrop-blur-md'
+                : 'glass-card'
             }`}
           >
-            <div className={`p-2.5 rounded-lg ${mode === 'support' ? 'bg-blue-600 text-white' : 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'}`}>
+            <div className={`p-2.5 rounded-xl ${mode === 'support' ? 'bg-blue-600 text-white' : 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'}`}>
               <MessageSquare className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-900 dark:text-white">Support Agent Copilot</p>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">Empathetic replies & refunds</p>
+              <p className="text-xs font-bold text-slate-900 dark:text-white">Customer Support Agent</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">Empathy, Refunds & Complaints</p>
             </div>
           </button>
 
           <button
             type="button"
             onClick={() => setMode('database')}
-            className={`p-3.5 rounded-xl border text-left flex items-center space-x-3 transition-all cursor-pointer ${
+            className={`p-3.5 rounded-2xl border text-left flex items-center space-x-3 transition-all cursor-pointer ${
               mode === 'database'
-                ? 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-500 ring-2 ring-emerald-500/20 shadow-xs'
-                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                ? 'bg-purple-50/80 dark:bg-purple-950/40 border-purple-500 ring-2 ring-purple-500/20 shadow-md backdrop-blur-md'
+                : 'glass-card'
             }`}
           >
-            <div className={`p-2.5 rounded-lg ${mode === 'database' ? 'bg-emerald-600 text-white' : 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400'}`}>
+            <div className={`p-2.5 rounded-xl ${mode === 'database' ? 'bg-purple-600 text-white' : 'bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'}`}>
               <Database className="w-5 h-5" />
             </div>
             <div>
@@ -308,7 +308,7 @@ export function Assistant() {
         {suggestions.length > 0 && messages.length <= 2 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {suggestions.map((cat, i) => (
-              <div key={i} className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-2.5 transition-colors">
+              <div key={i} className="glass-panel p-4 rounded-2xl space-y-2.5 transition-all">
                 <div className="flex items-center space-x-2 text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   <Sparkles className="w-3.5 h-3.5 text-blue-500" />
                   <span>{cat.category}</span>
@@ -331,7 +331,7 @@ export function Assistant() {
         )}
 
         {/* Main Chat Conversation Container */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col h-[520px] overflow-hidden transition-colors">
+        <div className="glass-panel rounded-2xl overflow-hidden flex flex-col h-[520px] transition-all">
           
           {/* Messages Thread */}
           <div className="flex-1 p-6 space-y-5 overflow-y-auto bg-slate-50/50 dark:bg-[#0B1120]/60 transition-colors">

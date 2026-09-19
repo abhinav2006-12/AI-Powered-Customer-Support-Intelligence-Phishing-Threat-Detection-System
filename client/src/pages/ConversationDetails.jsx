@@ -125,10 +125,10 @@ export function ConversationDetails() {
 
         {/* Security Overview Alert Banner */}
         {threat && (
-          <div className={`p-5 rounded-xl border flex flex-col sm:flex-row items-start justify-between gap-4 transition-colors ${
+          <div className={`p-5 rounded-2xl border backdrop-blur-xl flex flex-col sm:flex-row items-start justify-between gap-4 transition-all shadow-sm ${
             threat.threat_detected 
-              ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200' 
-              : 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
+              ? 'bg-rose-50/80 dark:bg-rose-950/40 border-rose-200/80 dark:border-rose-800/60 text-rose-900 dark:text-rose-200 shadow-rose-500/5' 
+              : 'bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-800/60 text-emerald-900 dark:text-emerald-200 shadow-emerald-500/5'
           }`}>
             <div className="flex items-start space-x-3">
               {threat.threat_detected ? (
@@ -156,8 +156,8 @@ export function ConversationDetails() {
         {/* Info Grid: Customer Info & AI Intelligence */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Customer Metadata Card */}
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-            <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2">
+          <div className="glass-panel p-5 rounded-2xl space-y-4 transition-all">
+            <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200/60 dark:border-slate-800/60 pb-2">
               Customer Profile
             </h4>
             <div className="space-y-3 text-xs">
@@ -194,8 +194,8 @@ export function ConversationDetails() {
 
           {/* AI Support Intelligence Card */}
           {analysis && (
-            <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
-              <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2">
+            <div className="lg:col-span-2 glass-panel p-5 rounded-2xl space-y-4 transition-all">
+              <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200/60 dark:border-slate-800/60 pb-2">
                 AI Support Intelligence & Categorization
               </h4>
 
@@ -218,18 +218,18 @@ export function ConversationDetails() {
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2 text-xs">
+              <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800/60 space-y-2 text-xs">
                 <div>
                   <span className="font-semibold text-slate-700 dark:text-slate-300">Main Issue:</span>
                   <p className="text-slate-900 dark:text-white font-medium">{analysis.issue}</p>
                 </div>
                 <div>
                   <span className="font-semibold text-slate-700 dark:text-slate-300">AI Summary:</span>
-                  <p className="text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-lg border border-slate-100 dark:border-slate-700/60">{analysis.summary}</p>
+                  <p className="text-slate-600 dark:text-slate-300 bg-white/50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200/50 dark:border-slate-700/60">{analysis.summary}</p>
                 </div>
                 <div>
                   <span className="font-semibold text-slate-700 dark:text-slate-300">Customer Request:</span>
-                  <p className="text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-lg border border-slate-100 dark:border-slate-700/60">{analysis.customer_request}</p>
+                  <p className="text-slate-600 dark:text-slate-300 bg-white/50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200/50 dark:border-slate-700/60">{analysis.customer_request}</p>
                 </div>
               </div>
             </div>
@@ -237,19 +237,19 @@ export function ConversationDetails() {
         </div>
 
         {/* Message Transcript Card */}
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
-          <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2">
+        <div className="glass-panel p-5 rounded-2xl space-y-3 transition-all">
+          <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200/60 dark:border-slate-800/60 pb-2">
             Conversation Transcript
           </h4>
           
-          <div className="bg-slate-950 text-slate-100 p-4 rounded-xl font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap border border-slate-800">
+          <div className="bg-slate-950/90 text-slate-100 p-4 rounded-xl font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap border border-slate-800/80 shadow-inner">
             {conversation.message}
           </div>
 
           {conversation.conversation_history && (
             <div className="pt-2">
               <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">History Log:</span>
-              <div className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 p-3 rounded-lg font-mono text-xs mt-1 whitespace-pre-wrap border border-slate-200 dark:border-slate-700">
+              <div className="bg-white/40 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 p-3 rounded-xl font-mono text-xs mt-1 whitespace-pre-wrap border border-slate-200/50 dark:border-slate-700/50">
                 {conversation.conversation_history}
               </div>
             </div>
@@ -258,34 +258,34 @@ export function ConversationDetails() {
 
         {/* Extracted URLs & Email Analysis Tables */}
         {urls.length > 0 && (
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 transition-colors">
-            <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-2">
+          <div className="glass-panel p-5 rounded-2xl space-y-3 transition-all">
+            <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200/60 dark:border-slate-800/60 pb-2">
               Extracted & Analyzed URLs ({urls.length})
             </h4>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-200 dark:border-slate-800">
-                    <th className="py-2 px-3">URL</th>
-                    <th className="py-2 px-3">Domain</th>
-                    <th className="py-2 px-3">Protocol</th>
-                    <th className="py-2 px-3">IP Usage</th>
-                    <th className="py-2 px-3">Lookalike Flag</th>
-                    <th className="py-2 px-3">Risk Score</th>
-                    <th className="py-2 px-3">Reason</th>
+                  <tr className="bg-slate-100/50 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 font-semibold border-b border-slate-200/60 dark:border-slate-800/60">
+                    <th className="py-2.5 px-3">URL</th>
+                    <th className="py-2.5 px-3">Domain</th>
+                    <th className="py-2.5 px-3">Protocol</th>
+                    <th className="py-2.5 px-3">IP Usage</th>
+                    <th className="py-2.5 px-3">Lookalike Flag</th>
+                    <th className="py-2.5 px-3">Risk Score</th>
+                    <th className="py-2.5 px-3">Reason</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                <tbody className="divide-y divide-slate-100/80 dark:divide-slate-800/60">
                   {urls.map((u) => (
-                    <tr key={u.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <tr key={u.id} className="hover:bg-white/40 dark:hover:bg-slate-800/40 transition-colors">
                       <td className="py-2.5 px-3 font-mono font-medium text-slate-900 dark:text-white truncate max-w-xs">{u.url}</td>
                       <td className="py-2.5 px-3 font-mono text-slate-600 dark:text-slate-300">{u.domain}</td>
                       <td className="py-2.5 px-3 uppercase text-[10px] font-bold text-slate-500 dark:text-slate-400">{u.protocol}</td>
                       <td className="py-2.5 px-3 text-slate-700 dark:text-slate-300">{u.uses_ip ? 'YES (IP Host)' : 'No'}</td>
                       <td className="py-2.5 px-3">
                         {u.lookalike ? (
-                          <span className="text-rose-700 dark:text-rose-400 font-bold bg-rose-50 dark:bg-rose-900/30 px-1.5 py-0.5 rounded border border-rose-200 dark:border-rose-800/60">
+                          <span className="text-rose-700 dark:text-rose-400 font-bold bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
                             Impersonation
                           </span>
                         ) : (
@@ -304,9 +304,9 @@ export function ConversationDetails() {
 
         {/* Recommended Action Box */}
         {analysis && (
-          <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+          <div className="glass-panel p-5 rounded-2xl transition-all">
             <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Recommended Agent / Security Action</h4>
-            <div className="p-3 bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-300 font-semibold text-xs rounded-lg border border-blue-200 dark:border-blue-900/60">
+            <div className="p-3.5 bg-blue-500/10 text-blue-900 dark:text-blue-300 font-semibold text-xs rounded-xl border border-blue-500/20">
               {analysis.recommended_action}
             </div>
           </div>

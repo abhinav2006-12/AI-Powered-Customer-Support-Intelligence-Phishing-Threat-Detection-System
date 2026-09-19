@@ -275,7 +275,10 @@ export async function getConversationsFromSupabase(params = {}) {
       (i.customer_name && i.customer_name.toLowerCase().includes(q)) ||
       (i.customer_email && i.customer_email.toLowerCase().includes(q)) ||
       (i.message && i.message.toLowerCase().includes(q)) ||
-      (i.external_id && i.external_id.toLowerCase().includes(q))
+      (i.external_id && i.external_id.toLowerCase().includes(q)) ||
+      (i.issue && i.issue.toLowerCase().includes(q)) ||
+      (i.category && i.category.toLowerCase().includes(q)) ||
+      (i.threat_type && i.threat_type.toLowerCase().includes(q))
     );
   }
 
@@ -283,6 +286,12 @@ export async function getConversationsFromSupabase(params = {}) {
   if (params.sentiment) items = items.filter(i => i.sentiment === params.sentiment);
   if (params.priority) items = items.filter(i => i.priority === params.priority);
   if (params.risk_level) items = items.filter(i => i.risk_level === params.risk_level);
+  if (params.security) {
+    if (params.security === 'Threat') items = items.filter(i => i.threat_detected === 1);
+    else if (params.security === 'Clean') items = items.filter(i => i.threat_detected === 0);
+    else items = items.filter(i => i.risk_level === params.security.toUpperCase());
+  }
+  if (params.resolution) items = items.filter(i => i.resolution_status === params.resolution);
   if (params.threat_detected !== undefined && params.threat_detected !== '') {
     items = items.filter(i => String(i.threat_detected) === String(params.threat_detected));
   }
@@ -293,11 +302,13 @@ export async function getConversationsFromSupabase(params = {}) {
   const paginated = items.slice((page - 1) * limit, page * limit);
 
   return {
+    items: paginated,
     conversations: paginated,
     pagination: {
       page,
       limit,
       total,
+      totalPages: Math.ceil(total / limit),
       pages: Math.ceil(total / limit)
     }
   };
@@ -362,25 +373,88 @@ export async function createConversationInSupabase(data) {
 }
 
 export async function getThreatsFromSupabase(params = {}) {
-  const { data: threats = [] } = await supabase.from('threats').select('*').eq('threat_detected', 1).order('created_at', { ascending: false });
+  const { data: threats = [] } = await supabase.from('threats').select('*').order('created_at', { ascending: false });
   const { data: convs = [] } = await supabase.from('conversations').select('*');
 
-  let items = threats.map(t => {
+  const totalThreats = threats.filter(t => t.threat_detected === 1).length;
+  const criticalThreats = threats.filter(t => t.risk_level === 'CRITICAL').length;
+  const highRiskThreats = threats.filter(t => t.risk_level === 'HIGH').length;
+  const suspiciousUrlsCount = threats.filter(t => (t.risk_score || 0) >= 40).length;
+  const suspiciousEmailsCount = threats.filter(t => (t.risk_score || 0) >= 30).length;
+  const socialEngineeringCount = threats.filter(t => t.social_engineering === 1).length;
+
+  let items = threats.filter(t => t.threat_detected === 1).map(t => {
     const c = convs.find(item => item.id === t.conversation_id) || {};
+    let techniques = [];
+    try {
+      techniques = Array.isArray(t.social_engineering_techniques) 
+        ? t.social_engineering_techniques 
+        : JSON.parse(t.social_engineering_techniques || '[]');
+    } catch {
+      techniques = t.social_engineering_techniques ? [t.social_engineering_techniques] : [];
+    }
+
     return {
-      ...t,
+      threat_id: t.id,
+      conversation_id: t.conversation_id,
       external_id: c.external_id || `CONV-${t.conversation_id}`,
       customer_name: c.customer_name || 'Anonymous User',
       customer_email: c.customer_email || 'unknown@example.com',
       channel: c.channel || 'Email',
-      message: c.message || ''
+      message: c.message || '',
+      threat_type: t.threat_type || 'Suspicious Activity',
+      risk_level: t.risk_level || 'LOW',
+      risk_score: t.risk_score || 0,
+      social_engineering: t.social_engineering || 0,
+      social_engineering_techniques: techniques,
+      credential_request: t.credential_request || 0,
+      otp_request: t.otp_request || 0,
+      reason: t.reason || '',
+      recommended_action: t.recommended_action || '',
+      created_at: t.created_at
     };
   });
 
-  if (params.risk_level) items = items.filter(i => i.risk_level === params.risk_level);
+  if (params.search) {
+    const q = params.search.toLowerCase();
+    items = items.filter(i => 
+      (i.customer_name && i.customer_name.toLowerCase().includes(q)) ||
+      (i.customer_email && i.customer_email.toLowerCase().includes(q)) ||
+      (i.external_id && i.external_id.toLowerCase().includes(q)) ||
+      (i.message && i.message.toLowerCase().includes(q)) ||
+      (i.threat_type && i.threat_type.toLowerCase().includes(q)) ||
+      (i.reason && i.reason.toLowerCase().includes(q)) ||
+      (Array.isArray(i.social_engineering_techniques) && i.social_engineering_techniques.join(' ').toLowerCase().includes(q))
+    );
+  }
+
+  if (params.risk_level) items = items.filter(i => i.risk_level === params.risk_level.toUpperCase());
   if (params.threat_type) items = items.filter(i => i.threat_type === params.threat_type);
 
-  return { threats: items, total: items.length };
+  const page = parseInt(params.page || 1, 10);
+  const limit = parseInt(params.limit || 15, 10);
+  const total = items.length;
+  const paginated = items.slice((page - 1) * limit, page * limit);
+
+  return {
+    summary: {
+      totalThreats,
+      criticalThreats,
+      highRiskThreats,
+      suspiciousUrlsCount,
+      suspiciousEmailsCount,
+      socialEngineeringCount
+    },
+    items: paginated,
+    threats: paginated,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      pages: Math.ceil(total / limit)
+    }
+  };
 }
 
 export async function getAnalyticsFromSupabase(range = '30d') {

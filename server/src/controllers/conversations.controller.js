@@ -19,9 +19,9 @@ export function getConversations(req, res) {
     let whereConditions = [];
 
     if (search.trim()) {
-      whereConditions.push('(c.customer_name LIKE ? OR c.customer_email LIKE ? OR c.message LIKE ? OR a.issue LIKE ?)');
+      whereConditions.push('(c.customer_name LIKE ? OR c.customer_email LIKE ? OR c.external_id LIKE ? OR c.message LIKE ? OR a.issue LIKE ? OR a.category LIKE ? OR a.summary LIKE ? OR a.keywords LIKE ? OR t.threat_type LIKE ?)');
       const searchTerm = `%${search.trim()}%`;
-      params.push(searchTerm, searchTerm, searchTerm, searchTerm);
+      params.push(searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
     }
 
     if (category) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { getThreats } from '../services/api';
@@ -16,7 +16,8 @@ import {
   Search,
   ExternalLink,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  X
 } from 'lucide-react';
 
 export function ThreatIntelligence() {
@@ -27,13 +28,15 @@ export function ThreatIntelligence() {
   const [page, setPage] = useState(1);
 
   const navigate = useNavigate();
+  const searchTimeoutRef = useRef(null);
 
-  const fetchThreatData = async (pageNo = 1) => {
+  const fetchThreatData = async (pageNo = 1, customSearch = null) => {
     try {
       setLoading(true);
+      const activeSearch = customSearch !== null ? customSearch : search;
       const res = await getThreats({
         risk_level: riskLevel,
-        search,
+        search: activeSearch,
         page: pageNo,
         limit: 15
       });
@@ -50,9 +53,24 @@ export function ThreatIntelligence() {
     fetchThreatData(1);
   }, [riskLevel]);
 
+  const handleSearchChange = (val) => {
+    setSearch(val);
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    searchTimeoutRef.current = setTimeout(() => {
+      fetchThreatData(1, val);
+    }, 300);
+  };
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
     fetchThreatData(1);
+  };
+
+  const handleClearSearch = () => {
+    setSearch('');
+    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    fetchThreatData(1, '');
   };
 
   if (loading && !data) {
@@ -115,32 +133,41 @@ export function ThreatIntelligence() {
         </div>
 
         {/* Filters Header Bar */}
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-wrap items-center justify-between gap-3 transition-colors">
+        <div className="glass-panel p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 transition-all">
           <form onSubmit={handleSearchSubmit} className="flex items-center space-x-3 flex-1 min-w-[240px]">
             <div className="relative flex-1">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search threat type, customer, reason..."
-                className="w-full pl-9 pr-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-800 dark:text-slate-200 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-rose-500 focus:outline-hidden transition-colors"
+                onChange={(e) => handleSearchChange(e.target.value)}
+                placeholder="Search threat type, customer, reason, ID, technique..."
+                className="w-full pl-9 pr-8 py-1.5 glass-input rounded-xl text-xs text-slate-800 dark:text-slate-200 focus:outline-hidden transition-all"
               />
+              {search && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-0.5"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
             <button
               type="submit"
-              className="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition-colors cursor-pointer"
+              className="px-4 py-1.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-semibold text-xs rounded-xl shadow-xs shadow-rose-500/25 transition-all cursor-pointer"
             >
               Search
             </button>
           </form>
 
           <div className="flex items-center space-x-2">
-            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Filter by Risk:</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Filter by Risk:</span>
             <select
               value={riskLevel}
               onChange={(e) => setRiskLevel(e.target.value)}
-              className="px-3 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-700 dark:text-slate-200 font-semibold focus:bg-white dark:focus:bg-slate-900 transition-colors"
+              className="px-3 py-1.5 glass-input rounded-xl text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-hidden transition-all"
             >
               <option value="">All Risk Levels</option>
               <option value="CRITICAL">CRITICAL Risk</option>
@@ -152,7 +179,7 @@ export function ThreatIntelligence() {
         </div>
 
         {/* Threat Table */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
+        <div className="glass-panel rounded-2xl overflow-hidden transition-all">
           {items.length === 0 ? (
             <div className="p-12 text-center text-slate-500 dark:text-slate-400">
               <p className="text-sm font-medium">No security threats detected in current filter view.</p>

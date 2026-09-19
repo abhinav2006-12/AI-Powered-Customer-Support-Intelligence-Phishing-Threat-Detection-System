@@ -94,7 +94,7 @@ export function AnalyzeConversation() {
     <Layout title="Analyze Conversation">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Preset Incident Buttons */}
-        <div className="bg-purple-50/70 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800/60 p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-colors">
+        <div className="glass-panel p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all">
           <div className="flex items-center space-x-2 text-purple-900 dark:text-purple-300">
             <Sparkles className="w-5 h-5 text-purple-600 dark:text-purple-400 flex-shrink-0" />
             <span className="text-xs font-bold uppercase tracking-wider">Live Incident Triage Presets:</span>
@@ -105,7 +105,7 @@ export function AnalyzeConversation() {
                 key={idx}
                 type="button"
                 onClick={() => handlePreset(preset)}
-                className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-purple-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-lg shadow-2xs hover:bg-purple-50 dark:hover:bg-slate-700/60 transition-colors cursor-pointer"
+                className="px-3 py-1.5 glass-input hover:border-purple-400 dark:hover:border-purple-500 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-xl shadow-2xs hover:bg-purple-50/80 dark:hover:bg-purple-900/30 transition-all cursor-pointer"
               >
                 {preset.title}
               </button>
@@ -114,7 +114,7 @@ export function AnalyzeConversation() {
         </div>
 
         {/* Input Form */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+        <div className="glass-panel p-6 rounded-2xl transition-all">
           <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">Input Conversation Data</h3>
           
           <form onSubmit={handleAnalyze} className="space-y-4">
@@ -251,7 +251,7 @@ export function AnalyzeConversation() {
             {/* Split Grid: Customer Intelligence & Security Intelligence */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Card 1: Customer Support Intelligence */}
-              <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+              <div className="glass-panel p-5 rounded-2xl space-y-4 transition-all">
                 <h4 className="text-sm font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400 border-b border-slate-100 dark:border-slate-800 pb-2">
                   Customer Support Intelligence
                 </h4>
@@ -300,7 +300,7 @@ export function AnalyzeConversation() {
               </div>
 
               {/* Card 2: Security Threat Intelligence */}
-              <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4 transition-colors">
+              <div className="glass-panel p-5 rounded-2xl space-y-4 transition-all">
                 <h4 className="text-sm font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 border-b border-slate-100 dark:border-slate-800 pb-2">
                   Security Threat & Phishing Intelligence
                 </h4>
@@ -377,9 +377,9 @@ export function AnalyzeConversation() {
             </div>
 
             {/* Recommended Action Card */}
-            <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs transition-colors">
+            <div className="glass-panel p-5 rounded-2xl transition-all">
               <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Recommended Agent / SOC Action</h4>
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-blue-50/70 dark:bg-blue-950/40 p-3 rounded-lg border border-blue-100 dark:border-blue-900/50 text-blue-900 dark:text-blue-300">
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-blue-50/70 dark:bg-blue-950/40 p-3 rounded-xl border border-blue-100 dark:border-blue-900/50 text-blue-900 dark:text-blue-300 backdrop-blur-xs">
                 {result.recommended_action}
               </p>
             </div>

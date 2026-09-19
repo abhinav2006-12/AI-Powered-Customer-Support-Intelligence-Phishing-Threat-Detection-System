@@ -27,7 +27,7 @@ export function Header({ title = 'Dashboard', onSeedSuccess }) {
   };
 
   return (
-    <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4 sticky top-0 z-20 flex items-center justify-between shadow-xs transition-colors duration-200">
+    <header className="glass-header px-6 py-4 sticky top-0 z-20 flex items-center justify-between transition-colors duration-200">
       <div className="flex items-center space-x-4">
         <div>
           <h1 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">{title}</h1>
